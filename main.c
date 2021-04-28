@@ -120,20 +120,7 @@ void main(void)
                 detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
 
             detective.body_frame_delay = detective.body_frame_index % 2 ? FRAME_DELAY * 2 : FRAME_DELAY;
-
-            // if (detective.body_tile_index ==)
         }
-        // if (detective.body_animate == 0 && detective.smoke_frame_delay == 0)
-        // {
-        //     // Animate the smoke when detective stops moving.
-        //     detective.updated = 1;
-        //     detective.smoke_frame_delay = DETECTIVE_SMOKE_FRAME_DELAY;
-        //     detective.smoke_frame_index++;
-        //     // Number of frames = (sizeof(detectivesmoke_metasprites) >> 1)
-        //     if (detective.smoke_frame_index >= (sizeof(tile_detectivesmoke_metasprites) >> 1))
-        //         // Reached the last frame. Reset to first frame.
-        //         detective.smoke_frame_index = 0;
-        // }
 
         if (joypads.joy0 & J_LEFT)
         {
