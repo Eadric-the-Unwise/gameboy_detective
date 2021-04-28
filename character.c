@@ -14,6 +14,8 @@ typedef struct Character
     UBYTE facing_right;
     UINT8 sprite_index;
 
+    UINT8 cig_shine_tile_index;
+
     // Body Metasprite
     UBYTE body_animate;
     UINT8 body_tile_index;

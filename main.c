@@ -5,6 +5,7 @@
 #include <gb/drawing.h>
 #include <gb/metasprites.h>
 #include "tiles/tile_detectivewalk.h"
+#include "tiles/cig_shine.h"
 #include "character.c"
 
 UBYTE running = 1;
@@ -16,15 +17,15 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 
 // Sprite delays (60 = 1 second)
 #define FRAME_DELAY 7
-#define DETECTIVE_SMOKE_FRAME_DELAY 45
 
-#define DETECTIVE_SMOKE_SPRITE_INDEX 0 // Metasprite size: 1 x 2 = 2 sprites
-#define DETECTIVE_SMOKE_SPRITE_COUNT 2
+//SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
+//0 in the OAM
+#define DETECTIVE_BODY_SPRITE_INDEX 2
+//amount of sprites
+// #define DETECTIVE_BODY_SPRITE_COUNT 4
 
-#define DETECTIVE_BODY_SPRITE_INDEX 2 // Metasprite size: 2 x 3 = 6 sprites
-#define DETECTIVE_BODY_SPRITE_COUNT 6
+#define DETECTIVE_CIG_SHINE_SPRITE_INDEX 0 //OAM
 
-// Sprite frames
 // DETECTIVE body stand
 #define DETECTIVE_BODY_STAND_FRAME 0
 // DETECTIVE body walk
@@ -37,11 +38,9 @@ void load_detective_data(Character *detective, UINT8 first_tile)
     detective->body_tile_index = first_tile;
     // Number of tiles = (sizeof(tile_detectivewalk_data) >> 4)
     set_sprite_data(detective->body_tile_index, (sizeof(tile_detectivewalk_data) >> 4), tile_detectivewalk_data);
-
-    // Smoke tiles
-    // detective->smoke_tile_index = detective->body_tile_index + (sizeof(tile_detectivewalk_data) >> 4);
-    // // Number of tiles = (sizeof(detectivesmoke_data) >> 4)
-    // set_sprite_data(detective->smoke_tile_index, (sizeof(detectivesmoke_data) >> 4), detectivesmoke_data);
+    //cig_shine index
+    detective->cig_shine_tile_index = detective->body_tile_index + (sizeof(tile_detectivewalk_data) >> 4);
+    set_sprite_data(detective->cig_shine_tile_index, (sizeof(cig_shine_data) >> 4), cig_shine_data);
 }
 
 //blocks detective from walking off of the screen
@@ -52,34 +51,19 @@ UBYTE can_detective_move(Character *detective, UINT8 x, UINT8 y)
 
 void update_detective(Character *detective, UINT8 x, UINT8 y)
 {
-    UINT8 i;
 
     if (detective->facing_right == 0)
     {
         // Facing left
         move_metasprite(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
+        move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
     }
     else
     {
         // Facing right (Flip the sprites)
         move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
+        move_metasprite_vflip(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
     }
-
-    if (detective->body_animate == 1)
-    {
-        // Body animation is ON
-        // Hide the smoke
-        for (i = 0; i < DETECTIVE_SMOKE_SPRITE_COUNT; i++)
-        {
-            set_sprite_tile(DETECTIVE_SMOKE_SPRITE_INDEX + i, 0);
-        }
-    }
-    // else
-    // {
-    //     // Body animation is OFF
-    //     // Show the smoke (the x-4 and y-4 is to offset the smoke sprites so they're positioned correctly)
-    //     move_metasprite(detectivesmoke_metasprites[detective->smoke_frame_index], detective->smoke_tile_index, DETECTIVE_SMOKE_SPRITE_INDEX, x - 4, y - 4);
-    // }
 }
 
 void setup_detective(Character *detective)
@@ -97,10 +81,6 @@ void setup_detective(Character *detective)
     detective->body_animate = 0; // Set to OFF
     detective->body_frame_index = DETECTIVE_BODY_STAND_FRAME;
     detective->body_frame_delay = 0;
-
-    // detective smoke
-    detective->smoke_frame_index = 0;
-    detective->smoke_frame_delay = DETECTIVE_SMOKE_FRAME_DELAY;
 }
 
 void main(void)
@@ -190,10 +170,6 @@ void main(void)
                 // Stop body animation
                 detective.body_animate = 0; // Set body animation to OFF
                 detective.body_frame_index = DETECTIVE_BODY_STAND_FRAME;
-
-                // Prepare smoke animation
-                detective.smoke_frame_index = 0;
-                detective.smoke_frame_delay = DETECTIVE_SMOKE_FRAME_DELAY;
             }
         }
 
@@ -207,8 +183,6 @@ void main(void)
         // Decrement animation delays
         if (detective.body_frame_delay > 0)
             detective.body_frame_delay--;
-        if (detective.smoke_frame_delay > 0)
-            detective.smoke_frame_delay--;
 
         // Wait for vblank
         wait_vbl_done();
