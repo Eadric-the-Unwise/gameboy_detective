@@ -11,7 +11,7 @@ UBYTE running = 1;
 joypads_t joypads;
 Character detective;
 
-// Blank tile.
+// Blank tile. (h3's workaround to hide the smoke bc blank_tile wasnt working)
 const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // Sprite delays (60 = 1 second)
@@ -28,7 +28,7 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 // DETECTIVE body stand
 #define DETECTIVE_BODY_STAND_FRAME 0
 // DETECTIVE body walk
-#define DETECTIVE_BODY_WALK_FRAME_START 1
+#define DETECTIVE_BODY_WALK_FRAME_START 0
 #define DETECTIVE_BODY_WALK_FRAME_END 3
 
 void load_detective_data(Character *detective, UINT8 first_tile)
@@ -54,14 +54,14 @@ void update_detective(Character *detective, UINT8 x, UINT8 y)
 {
     UINT8 i;
 
-    if (detective->facing_right == 1)
+    if (detective->facing_right == 0)
     {
-        // Facing right
+        // Facing left
         move_metasprite(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
     }
     else
     {
-        // Facing left (Flip the sprites)
+        // Facing right (Flip the sprites)
         move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
     }
 
@@ -91,7 +91,7 @@ void setup_detective(Character *detective)
     detective->x = 100;
     detective->y = 130;
 
-    detective->facing_right = 1; // Set to RIGHT
+    detective->facing_right = 0; // Set to RIGHT
 
     // detective body
     detective->body_animate = 0; // Set to OFF
