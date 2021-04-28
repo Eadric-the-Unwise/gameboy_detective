@@ -110,7 +110,7 @@ void main(void)
     SHOW_SPRITES;
 
     OBP1_REG = 0xE1;
-    BGP_REG = 0xFF;
+    BGP_REG = 0x1B;
 
     Character detective;
 
@@ -125,6 +125,7 @@ void main(void)
 
     while (running)
     {
+
         joypad_ex(&joypads);
 
         if (detective.body_animate == 1 && detective.body_frame_delay == 0)
@@ -137,6 +138,10 @@ void main(void)
             if (detective.body_frame_index > DETECTIVE_BODY_WALK_FRAME_END)
                 // Reached the last frame. Reset to FRAME_START.
                 detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
+
+            detective.body_frame_delay = detective.body_frame_index % 2 ? FRAME_DELAY * 2 : FRAME_DELAY;
+
+            // if (detective.body_tile_index ==)
         }
         // if (detective.body_animate == 0 && detective.smoke_frame_delay == 0)
         // {
