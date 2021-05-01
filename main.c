@@ -18,6 +18,7 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 
 // Sprite delays (60 = 1 second)
 #define FRAME_DELAY 7
+#define SMOKE_DELAY 11
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
@@ -35,9 +36,9 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 #define DETECTIVE_BODY_WALK_FRAME_START 0
 #define DETECTIVE_BODY_WALK_FRAME_END 3
 #define DETECTIVE_SMOKE_STAND_FRAME_START 0
-#define DETECTIVE_SMOKE_STAND_FRAME_END 5
-#define DETECTIVE_SMOKE_WALK_FRAME_START 0
-#define DETECTIVE_SMOKE_WALK_FRAME_END 5
+#define DETECTIVE_SMOKE_STAND_FRAME_END 4
+#define DETECTIVE_SMOKE_WALK_FRAME_START 5
+#define DETECTIVE_SMOKE_WALK_FRAME_END 11
 
 #define TILE_SIZE 8
 
@@ -142,7 +143,7 @@ void main(void)
         {
             // Animate the body when detective is moving.
             detective.updated = 1;
-            detective.smoke_frame_delay = FRAME_DELAY;
+            detective.smoke_frame_delay = SMOKE_DELAY;
             detective.smoke_frame_index++;
             //IF detective.body.animate = 1, then load DETECTIVE_SMOKE_WALK_FRAME_END. Now ====> detective.smoke_frame_index > DETECTIVE_SMOKE_WALK_FRAME_END
             if (detective.smoke_frame_index > (detective.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
