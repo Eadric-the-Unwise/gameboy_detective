@@ -1,3 +1,7 @@
+// #ifndef CHARACTER_H //if its not defined, then proceed to line 2 and define it.
+// #define CHARACTER_H
+//pragma once is a stronger method to ifndef <-> endif
+#pragma once
 #include <stdio.h>
 #include <gb/font.h>
 #include <gb/console.h>
@@ -26,5 +30,8 @@ typedef struct Character
     UINT8 smoke_tile_index;
     UINT8 smoke_frame_index;
     UINT8 smoke_frame_delay;
+    UINT8 smoke_start_delay;
 
 } Character;
+// #endif
+//sort of like an end } of an if statement. If it is defined above, it will not be copied again

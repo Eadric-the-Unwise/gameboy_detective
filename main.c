@@ -7,7 +7,7 @@
 #include "tiles/tile_detectivewalk.h"
 #include "tiles/cig_shine.h"
 #include "tiles/smoke.h"
-#include "character.c"
+#include "character.h"
 
 UBYTE running = 1;
 joypads_t joypads;
@@ -18,16 +18,17 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 
 // Sprite delays (60 = 1 second)
 #define FRAME_DELAY 7
-#define SMOKE_DELAY 11
+#define SMOKE_DELAY 9
+#define SMOKE_IDLE_DELAY 11
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
-#define DETECTIVE_BODY_SPRITE_INDEX 2
+#define DETECTIVE_BODY_SPRITE_INDEX 4
 //amount of sprites
 // #define DETECTIVE_BODY_SPRITE_COUNT 4
 
 #define DETECTIVE_CIG_SHINE_SPRITE_INDEX 0 //OAM
-#define DETECTIVE_SMOKE_SPRITE_INDEX 6     //OAM
+#define DETECTIVE_SMOKE_SPRITE_INDEX 2     //OAM
 
 #define DETECTIVE_SMOKE_SPRITE_COUNT 2
 // DETECTIVE body stand
@@ -101,6 +102,7 @@ void setup_detective(Character *detective)
     detective->body_frame_delay = 0;
     detective->smoke_frame_index = DETECTIVE_SMOKE_STAND_FRAME_START;
     detective->smoke_frame_delay = 0;
+    detective->smoke_start_delay = 0;
 }
 
 void main(void)
@@ -144,14 +146,36 @@ void main(void)
 
         if (detective.smoke_frame_delay == 0)
         {
-            // Animate the body when detective is moving.
+            // Animate the smoke when detective is moving.
             detective.updated = 1;
             detective.smoke_frame_delay = SMOKE_DELAY;
-            detective.smoke_frame_index++;
-            //IF detective.body.animate = 1, then load DETECTIVE_SMOKE_WALK_FRAME_END. Now ====> detective.smoke_frame_index > DETECTIVE_SMOKE_WALK_FRAME_END
-            if (detective.smoke_frame_index > (detective.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
-                // Reached the last frame. Reset to FRAME_START.
-                detective.smoke_frame_index = detective.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
+            if (detective.body_animate == 1)
+            {
+                detective.smoke_frame_delay = SMOKE_DELAY;
+            }
+            else
+                detective.smoke_frame_delay = SMOKE_IDLE_DELAY;
+
+            if (detective.smoke_frame_index == DETECTIVE_SMOKE_WALK_FRAME_START || detective.smoke_frame_index == DETECTIVE_SMOKE_STAND_FRAME_START)
+            {
+                detective.smoke_start_delay++;
+
+                if (detective.smoke_start_delay > 10)
+                {
+                    detective.smoke_start_delay = 0;
+                }
+            }
+
+            if (detective.smoke_start_delay == 0)
+            {
+                detective.smoke_frame_index++;
+
+                //IF detective.body.animate = 1, then load DETECTIVE_SMOKE_WALK_FRAME_END. Now ====> detective.smoke_frame_index > DETECTIVE_SMOKE_WALK_FRAME_END
+                if (detective.smoke_frame_index > (detective.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
+                    // Reached the last frame. Reset to FRAME_START.
+
+                    detective.smoke_frame_index = detective.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
+            }
         }
 
         if (joypads.joy0 & J_LEFT)

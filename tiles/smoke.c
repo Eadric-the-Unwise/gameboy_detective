@@ -21,37 +21,37 @@ const metasprite_t smoke_metasprite0[] = {
 	{metasprite_end}};
 
 const metasprite_t smoke_metasprite1[] = {
-	{0, -8, 0, 0}, {metasprite_end}};
+	{0, -8, 0, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite2[] = {
-	{0, -8, 1, 0}, {metasprite_end}};
+	{0, -8, 1, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite3[] = {
-	{-8, -8, 2, 0}, {8, 0, 3, 0}, {metasprite_end}};
+	{-8, -8, 2, S_PALETTE}, {8, 0, 3, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite4[] = {
-	{-8, -8, 4, 0}, {metasprite_end}};
+	{-8, -8, 4, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite5[] = {
-	{-8, -8, 5, 0}, {metasprite_end}};
+	{-8, -8, 5, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite6[] = {
 	{metasprite_end}};
 
 const metasprite_t smoke_metasprite7[] = {
-	{0, -8, 6, 0}, {metasprite_end}};
+	{0, -8, 6, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite8[] = {
-	{0, -8, 7, 0}, {0, 8, 8, 0}, {metasprite_end}};
+	{0, -8, 7, S_PALETTE}, {0, 8, 8, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite9[] = {
-	{0, 0, 9, 0}, {metasprite_end}};
+	{0, 0, 9, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite10[] = {
-	{0, 0, 10, 0}, {metasprite_end}};
+	{0, 0, 10, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t smoke_metasprite11[] = {
-	{0, 0, 11, 0}, {metasprite_end}};
+	{0, 0, 11, S_PALETTE}, {metasprite_end}};
 
 const metasprite_t *const smoke_metasprites[12] = {
 	smoke_metasprite0, smoke_metasprite1, smoke_metasprite2, smoke_metasprite3, smoke_metasprite4, smoke_metasprite5, smoke_metasprite6, smoke_metasprite7, smoke_metasprite8, smoke_metasprite9, smoke_metasprite10, smoke_metasprite11};
