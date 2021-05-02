@@ -57,9 +57,11 @@ void load_detective_data(Character *detective, UINT8 first_tile)
 }
 
 //blocks detective from walking off of the screen
-UBYTE can_detective_move(Character *detective, UINT8 x, UINT8 y)
+UBYTE can_detective_move(UINT8 x, UINT8 y)
 {
-    return x >= 16 && x <= 160;
+    //since y can never be negative, we dont need to add && y >= 0
+    //unsigned is always a positive integer
+    return x >= 16 && x <= 160 && y >= 26 && y <= 150;
 }
 
 void update_detective(Character *detective, UINT8 x, UINT8 y)
@@ -155,7 +157,7 @@ void main(void)
         {
             // Move left
             detective.facing_right = 0;
-            if (can_detective_move(&detective, detective.x - 1, detective.y))
+            if (can_detective_move(detective.x - 1, detective.y))
             {
                 detective.updated = 1;
                 detective.x -= 1;
@@ -171,10 +173,41 @@ void main(void)
         {
             // Move right
             detective.facing_right = 1;
-            if (can_detective_move(&detective, detective.x + 1, detective.y))
+            if (can_detective_move(detective.x + 1, detective.y))
             {
                 detective.updated = 1;
                 detective.x += 1;
+                if (detective.body_animate == 0)
+                {
+                    // started moving for the first time
+                    detective.body_animate = 1;
+                    // detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
+                }
+            }
+        }
+        else if (joypads.joy0 & J_UP)
+        {
+
+            if (can_detective_move(detective.x, detective.y - 1))
+            {
+                detective.updated = 1;
+                detective.y -= 1;
+                if (detective.body_animate == 0)
+                {
+                    // started moving for the first time
+                    detective.body_animate = 1;
+                    // detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
+                }
+            }
+        }
+
+        else if (joypads.joy0 & J_DOWN)
+        {
+
+            if (can_detective_move(detective.x, detective.y + 1))
+            {
+                detective.updated = 1;
+                detective.y += 1;
                 if (detective.body_animate == 0)
                 {
                     // started moving for the first time
