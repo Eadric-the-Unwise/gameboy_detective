@@ -12,14 +12,16 @@
 UBYTE running = 1;
 joypads_t joypads;
 Character detective;
+Character smoke;
 
 // Blank tile. (h3's workaround to hide the smoke bc blank_tile wasnt working)
 const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // Sprite delays (60 = 1 second)
 #define FRAME_DELAY 7
-#define SMOKE_DELAY 9
-#define SMOKE_IDLE_DELAY 11
+#define SMOKE_DELAY 9       //walking smoke animation frame delay
+#define SMOKE_IDLE_DELAY 11 //standing smoke animation frame delay
+#define SMOKE_START_DELAY 8 //pause time between smoke puffs
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
@@ -160,7 +162,7 @@ void main(void)
             {
                 detective.smoke_start_delay++;
 
-                if (detective.smoke_start_delay > 10)
+                if (detective.smoke_start_delay > SMOKE_START_DELAY)
                 {
                     detective.smoke_start_delay = 0;
                 }
@@ -273,7 +275,7 @@ void main(void)
                 // Stop body animation
                 detective.body_animate = 0; // Set body animation to OFF
                 detective.body_frame_index = DETECTIVE_BODY_STAND_FRAME;
-                detective.smoke_frame_index = DETECTIVE_SMOKE_STAND_FRAME_START;
+                // detective.smoke_frame_index = DETECTIVE_SMOKE_STAND_FRAME_START;
             }
         }
 
