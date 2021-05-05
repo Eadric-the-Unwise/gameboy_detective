@@ -181,6 +181,8 @@ void main(void)
     setup_detective(&detective);
     setup_smoke(&smoke);
 
+    joypad_init(1, &joypads);
+
     while (running)
     {
 
@@ -287,7 +289,7 @@ void main(void)
                 // ...change to facing left
                 detective.updated = 1;
                 detective.facing_right = 0;
-                        }
+            }
 
             if (can_detective_move(detective.x - 1, detective.y))
             {
