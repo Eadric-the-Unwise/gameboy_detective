@@ -312,7 +312,7 @@ void main(void)
         }
         else if (joypads.joy0 & J_RIGHT)
         {
-            // Move right
+            // Move right GRRR
             if (detective.facing_right == 0)
             { // if previously facing left...
                 // ...change to facing right
