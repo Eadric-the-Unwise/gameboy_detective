@@ -8,7 +8,7 @@
 #include "tiles/cig_shine.h"
 #include "tiles/smoke.h"
 #include "character.h"
-//comment
+
 UBYTE running = 1;
 joypads_t joypads;
 Character detective;
