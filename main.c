@@ -9,6 +9,8 @@
 #include "tiles/smoke.h"
 #include "character.h"
 
+/* just a test */
+
 UBYTE running = 1;
 joypads_t joypads;
 Character detective;
