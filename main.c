@@ -108,11 +108,7 @@ void update_smoke(Character *smoke, UINT8 x, UINT8 y)
 
     for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < 12; i++)
         shadow_OAM[i].y = 0;
-    if (smoke->smoke_frame_index == DETECTIVE_SMOKE_STAND_FRAME_START || smoke->smoke_frame_index == DETECTIVE_SMOKE_WALK_FRAME_START)
-    {
-        smoke->x = detective.x;
-        smoke->y = detective.y;
-    }
+
     if (smoke->facing_right == 0)
     {
         move_metasprite(smoke_metasprites[smoke->smoke_frame_index], smoke->smoke_tile_index, SMOKE_SMOKE_SPRITE_INDEX, x + TILE_SIZE, y - TILE_SIZE);
@@ -254,8 +250,15 @@ void main(void)
 
             if (smoke.smoke_frame_index == DETECTIVE_SMOKE_WALK_FRAME_START || smoke.smoke_frame_index == DETECTIVE_SMOKE_STAND_FRAME_START)
             {
+                if (joypads.joy0 & J_RIGHT)
+                {
+                    smoke.facing_right = 1;
+                }
+                else
+                    smoke.facing_right = 0;
                 smoke.x = detective.x;
                 smoke.y = detective.y;
+
                 smoke.smoke_start_delay++;
 
                 if (smoke.smoke_start_delay > SMOKE_START_DELAY)
@@ -275,7 +278,6 @@ void main(void)
                     smoke.smoke_frame_index = smoke.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
             }
         }
-
         if (joypads.joy0 & J_LEFT)
         {
 
@@ -285,8 +287,7 @@ void main(void)
                 // ...change to facing left
                 detective.updated = 1;
                 detective.facing_right = 0;
-                detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
-            }
+                        }
 
             if (can_detective_move(detective.x - 1, detective.y))
             {
@@ -302,7 +303,7 @@ void main(void)
         }
         else if (joypads.joy0 & J_RIGHT)
         {
-            // Move right GRRR
+            // Move right
             if (detective.facing_right == 0)
             { // if previously facing left...
                 // ...change to facing right
