@@ -8,11 +8,12 @@
 #include "tiles/cig_shine.h"
 #include "tiles/smoke.h"
 #include "character.h"
+#include "character_smoke.h"
 
 UBYTE running = 1;
 joypads_t joypads;
 Character detective;
-Character smoke;
+CharacterSmoke smoke;
 
 // Blank tile. (h3's workaround to hide the smoke bc blank_tile wasnt working)
 const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -21,25 +22,22 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 #define FRAME_DELAY 7
 #define SMOKE_DELAY 9             //walking smoke animation frame delay
 #define SMOKE_IDLE_DELAY 11       //standing smoke animation frame delay
-#define SMOKE_IDLE_START_DELAY 20 //pause time between smoke puffs
-#define SMOKE_WALK_START_DELAY 80
+#define SMOKE_IDLE_START_DELAY 30 //pause time between smoke puffs
+#define SMOKE_WALK_START_DELAY 5
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
-#define DETECTIVE_BODY_SPRITE_INDEX 4
+
 //amount of sprites
 // #define DETECTIVE_BODY_SPRITE_COUNT 4
+#define SMOKE_SMOKE_SPRITE_INDEX 0                     //OAM
+UBYTE smoke_tile_count = SMOKE_SMOKE_SPRITE_INDEX + 2; //assures ShadowOAM only effects the smoke tiles
+#define DETECTIVE_CIG_SHINE_SPRITE_INDEX 2             //OAM
+#define DETECTIVE_BODY_SPRITE_INDEX 4                  //OAM
 
-#define DETECTIVE_CIG_SHINE_SPRITE_INDEX 0 //OAM
-#define DETECTIVE_SMOKE_SPRITE_INDEX 2     //OAM
-#define SMOKE_BODY_SPRITE_INDEX 12
-#define SMOKE_CIG_SHINE_SPRITE_INDEX 8
-#define SMOKE_SMOKE_SPRITE_INDEX 10
-
-#define DETECTIVE_SMOKE_SPRITE_COUNT 2
 // DETECTIVE body stand
 #define DETECTIVE_BODY_STAND_FRAME 0
-// DETECTIVE body walk
+// DETECTIVE body walk animations + smoke animations
 #define DETECTIVE_BODY_WALK_FRAME_START 0
 #define DETECTIVE_BODY_WALK_FRAME_END 3
 #define DETECTIVE_SMOKE_STAND_FRAME_START 0
@@ -58,12 +56,9 @@ void load_detective_data(Character *detective, UINT8 first_tile)
     //cig_shine index
     detective->cig_shine_tile_index = detective->body_tile_index + (sizeof(tile_detectivewalk_data) >> 4);
     set_sprite_data(detective->cig_shine_tile_index, (sizeof(cig_shine_data) >> 4), cig_shine_data);
-    //smoke index loads in the OAM from where the cig_shine is loading, + the number of tiles of cig_shine
-    detective->smoke_tile_index = detective->cig_shine_tile_index + (sizeof(cig_shine_data) >> 4);
-    set_sprite_data(detective->smoke_tile_index, (sizeof(smoke_data) >> 4), smoke_data);
 }
 
-void load_smoke_data(Character *smoke, UINT8 first_tile)
+void load_smoke_data(CharacterSmoke *smoke, UINT8 first_tile)
 {
     // Body tiles
     smoke->body_tile_index = first_tile;
@@ -86,8 +81,7 @@ UBYTE can_detective_move(UINT8 x, UINT8 y)
 
 void update_detective(Character *detective, UINT8 x, UINT8 y)
 {
-    for (UBYTE i = DETECTIVE_SMOKE_SPRITE_INDEX; i < 4; i++)
-        shadow_OAM[i].y = 0;
+
     if (detective->facing_right == 0)
     {
         // Facing left
@@ -104,10 +98,10 @@ void update_detective(Character *detective, UINT8 x, UINT8 y)
     }
 }
 
-void update_smoke(Character *smoke, UINT8 x, UINT8 y)
+void update_smoke(CharacterSmoke *smoke, UINT8 x, UINT8 y)
 {
 
-    for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < 12; i++)
+    for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < smoke_tile_count; i++)
         shadow_OAM[i].y = 0;
 
     if (smoke->facing_right == 0)
@@ -140,7 +134,7 @@ void setup_detective(Character *detective)
     detective->smoke_start_delay = 0;
 }
 
-void setup_smoke(Character *smoke)
+void setup_smoke(CharacterSmoke *smoke)
 {
     // Make sure update_detective() is called.
     smoke->updated = 1;
@@ -169,7 +163,7 @@ void main(void)
     BGP_REG = 0x1B;
 
     Character detective;
-    Character smoke;
+    CharacterSmoke smoke;
 
     // Load blank sprite data.
     set_sprite_data(0, 1, blank_data);
