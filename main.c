@@ -22,7 +22,7 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 #define SMOKE_DELAY 9             //walking smoke animation frame delay
 #define SMOKE_IDLE_DELAY 11       //standing smoke animation frame delay
 #define SMOKE_IDLE_START_DELAY 20 //pause time between smoke puffs
-#define SMOKE_WALK_START_DELAY 60
+#define SMOKE_WALK_START_DELAY 80
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
@@ -45,7 +45,7 @@ const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x
 #define DETECTIVE_SMOKE_STAND_FRAME_START 0
 #define DETECTIVE_SMOKE_STAND_FRAME_END 5
 #define DETECTIVE_SMOKE_WALK_FRAME_START 6
-#define DETECTIVE_SMOKE_WALK_FRAME_END 11
+#define DETECTIVE_SMOKE_WALK_FRAME_END 10
 
 #define TILE_SIZE 8
 
