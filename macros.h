@@ -2,10 +2,10 @@
 
 // Sprite delays (60 = 1 second)
 #define FRAME_DELAY 7
-#define SMOKE_DELAY 9             //walking smoke animation frame delay
+#define SMOKE_DELAY 12            //walking smoke animation frame delay
 #define SMOKE_IDLE_DELAY 11       //standing smoke animation frame delay
 #define SMOKE_IDLE_START_DELAY 90 //pause time between smoke puffs
-#define SMOKE_WALK_START_DELAY 0
+#define SMOKE_WALK_START_DELAY 20
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
@@ -21,8 +21,8 @@
 // DETECTIVE body stand
 #define DETECTIVE_BODY_STAND_FRAME 0
 
-#define DETECTIVE_BODY_UP_STAND_FRAME 5
-#define DETECTIVE_BODY_DOWN_STAND_FRAME 5
+#define DETECTIVE_BODY_UP_STAND_FRAME 4
+#define DETECTIVE_BODY_DOWN_STAND_FRAME 8
 
 // DETECTIVE body walk animations + smoke animations
 #define DETECTIVE_BODY_WALK_FRAME_START 0
@@ -31,14 +31,14 @@
 #define DETECTIVE_BODY_UP_FRAME_START 4
 #define DETECTIVE_BODY_UP_FRAME_END 7
 
-#define DETECTIVE_BODY_DOWN_FRAME_START 4
-#define DETECTIVE_BODY_DOWN_FRAME_END 7
+#define DETECTIVE_BODY_DOWN_FRAME_START 8
+#define DETECTIVE_BODY_DOWN_FRAME_END 11
 
 #define DETECTIVE_SMOKE_STAND_FRAME_START 0
 #define DETECTIVE_SMOKE_STAND_FRAME_END 5
 
 #define DETECTIVE_SMOKE_WALK_FRAME_START 6
-#define DETECTIVE_SMOKE_WALK_FRAME_END 10
+#define DETECTIVE_SMOKE_WALK_FRAME_END 8
 
 #define TILE_SIZE 8
 
