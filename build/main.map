@@ -68,39 +68,39 @@ Area                       Addr        Size        Decimal Bytes (Attributes)
         -----  ------            -----  ------            -----  ------    
      00000002  l__HEADER |    00000002  l__HEADER |    00000003  l__HEADER
      00000003  l__HRAM11 |    00000005  l__HEADER |    00000006  l__HEADER
-     00000007  l__HEADER |    00000008  l__HEADER |    0000000F  l__GSINIT
-     00000018  l__BSS    |    00000027  l__DATA   |    0000002C  l__HEADER
+     00000007  l__HEADER |    00000008  l__HEADER |    0000000A  l__GSINIT
+     00000018  l__BSS    |    00000026  l__DATA   |    0000002C  l__HEADER
      00000033  l__HEADER |    0000006A  l__HOME   |    00000083  l__HEADER
-     000000C8  l__BASE   |    00000200  s__CODE   |    00000CC0  l__CODE  
-     00000EC0  s__HOME   |    00000F2A  s__BASE   |    00000FF2  s__CODE_0
-     00000FF2  s__GSINIT |    00000FF2  s__LIT    |    00001001  s__GSFINA
-     0000C000  _shadow_O |    0000C0A0  s__DATA   |    0000C0C7  s__BSS   
-     0000C0DF  s__HEAP   |    0000E000  .STACK    |    0000FF80  .refresh_
+     000000C8  l__BASE   |    00000200  s__CODE   |    00000CBE  l__CODE  
+     00000EBE  s__HOME   |    00000F28  s__BASE   |    00000FF0  s__CODE_0
+     00000FF0  s__GSINIT |    00000FF0  s__LIT    |    00000FFA  s__GSFINA
+     0000C000  _shadow_O |    0000C0A0  s__DATA   |    0000C0C6  s__BSS   
+     0000C0DE  s__HEAP   |    0000E000  .STACK    |    0000FF80  .refresh_
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_CODE                  00000200    00000CC0 =        3264. bytes (REL,CON)
+_CODE                  00000200    00000CBE =        3262. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
      00000200  _load_det |    0000023B  _blank_da |    0000024B  _load_smo
      00000272  _can_dete |    0000028F  _update_d |    000003D8  _update_s
-     0000046D  _setup_de |    000004AB  _setup_sm |    000004E9  _main    
-     00000A9A  _tile_det |    00000B3A  _tile_det |    00000B4E  _tile_det
-     00000B62  _tile_det |    00000B76  _tile_det |    00000B8A  _tile_det
-     00000B92  _cig_shin |    00000BD2  _cig_shin |    00000BDE  _cig_shin
-     00000BEA  _cig_shin |    00000BF6  _cig_shin |    00000C02  _cig_shin
-     00000C0A  _smoke_da |    00000C9A  _smoke_me |    00000C9E  _smoke_me
-     00000CA6  _smoke_me |    00000CAE  _smoke_me |    00000CBA  _smoke_me
-     00000CC2  _smoke_me |    00000CCA  _smoke_me |    00000CCE  _smoke_me
-     00000CD6  _smoke_me |    00000CDE  _smoke_me |    00000CE6  _smoke_me
-     00000CEE  _smoke_me |    00000D04  ___move_m |    00000D3C  ___hide_m
-     00000D5C  .sgb_chec |    00000D5C  _sgb_chec |    00000DAD  _sgb_tran
-     00000DBB  _sgb_tran |    00000DC6  .sgb_tran |    00000DF8  .sgb_wait
-     00000E04  .MLT_REQ_ |    00000E06  .MLT_REQ_ |    00000E08  .MLT_REQ_
-     00000E0A  ___move_m |    00000E46  ___move_m |    00000E82  ___move_m
+     0000046B  _setup_de |    000004A9  _setup_sm |    000004E7  _main    
+     00000A98  _tile_det |    00000B38  _tile_det |    00000B4C  _tile_det
+     00000B60  _tile_det |    00000B74  _tile_det |    00000B88  _tile_det
+     00000B90  _cig_shin |    00000BD0  _cig_shin |    00000BDC  _cig_shin
+     00000BE8  _cig_shin |    00000BF4  _cig_shin |    00000C00  _cig_shin
+     00000C08  _smoke_da |    00000C98  _smoke_me |    00000C9C  _smoke_me
+     00000CA4  _smoke_me |    00000CAC  _smoke_me |    00000CB8  _smoke_me
+     00000CC0  _smoke_me |    00000CC8  _smoke_me |    00000CCC  _smoke_me
+     00000CD4  _smoke_me |    00000CDC  _smoke_me |    00000CE4  _smoke_me
+     00000CEC  _smoke_me |    00000D02  ___move_m |    00000D3A  ___hide_m
+     00000D5A  .sgb_chec |    00000D5A  _sgb_chec |    00000DAB  _sgb_tran
+     00000DB9  _sgb_tran |    00000DC4  .sgb_tran |    00000DF6  .sgb_wait
+     00000E02  .MLT_REQ_ |    00000E04  .MLT_REQ_ |    00000E06  .MLT_REQ_
+     00000E08  ___move_m |    00000E44  ___move_m |    00000E80  ___move_m
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
@@ -266,41 +266,41 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_HOME                  00000EC0    0000006A =         106. bytes (REL,CON)
+_HOME                  00000EBE    0000006A =         106. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     00000EC0  .remove_V |    00000EC3  .remove_i |    00000EE0  .add_VBL 
-     00000EE3  .add_int  |    00000EEE  .wait_vbl |    00000EEE  _wait_vbl
-     00000EFD  .display_ |    00000EFD  _display_ |    00000F14  _remove_V
-     00000F1F  _add_VBL 
+     00000EBE  .remove_V |    00000EC1  .remove_i |    00000EDE  .add_VBL 
+     00000EE1  .add_int  |    00000EEC  .wait_vbl |    00000EEC  _wait_vbl
+     00000EFB  .display_ |    00000EFB  _display_ |    00000F12  _remove_V
+     00000F1D  _add_VBL 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_BASE                  00000F2A    000000C8 =         200. bytes (REL,CON)
+_BASE                  00000F28    000000C8 =         200. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     00000F2A  _set_bkg_ |    00000F2A  _set_win_ |    00000F32  _set_spri
-     00000F62  _joypad_i |    00000FA8  _joypad_e |    00000FAD  .joypad_e
+     00000F28  _set_bkg_ |    00000F28  _set_win_ |    00000F30  _set_spri
+     00000F60  _joypad_i |    00000FA6  _joypad_e |    00000FAB  .joypad_e
 ASxxxx Linker V03.00 + NoICE + sdld,  page 23.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_GSINIT                00000FF2    0000000F =          15. bytes (REL,CON)
+_GSINIT                00000FF0    0000000A =          10. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     00000FF2  gsinit   
+     00000FF0  gsinit   
 ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_GSFINAL               00001001    00000001 =           1. bytes (REL,CON)
+_GSFINAL               00000FFA    00000001 =           1. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
@@ -309,24 +309,24 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_DATA                  0000C0A0    00000027 =          39. bytes (REL,CON)
+_DATA                  0000C0A0    00000026 =          38. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
      0000C0A0  _running  |    0000C0A1  _joypads  |    0000C0A6  _detectiv
-     0000C0B4  _smoke    |    0000C0C2  _smoke_ti |    0000C0C3  ___curren
-     0000C0C5  ___curren |    0000C0C6  ___render
+     0000C0B4  _smoke    |    0000C0C2  ___curren |    0000C0C4  ___curren
+     0000C0C5  ___render
 ASxxxx Linker V03.00 + NoICE + sdld,  page 26.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_BSS                   0000C0C7    00000018 =          24. bytes (REL,CON)
+_BSS                   0000C0C6    00000018 =          24. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000C0C7  __cpu     |    0000C0C8  .mode     |    0000C0C9  .sys_time
-     0000C0C9  _sys_time |    0000C0CB  .int_0x40
+     0000C0C6  __cpu     |    0000C0C7  .mode     |    0000C0C8  .sys_time
+     0000C0C8  _sys_time |    0000C0CA  .int_0x40
 ASxxxx Linker V03.00 + NoICE + sdld,  page 27.
 Hexadecimal  [32-Bits]
 
@@ -893,13 +893,13 @@ Files Linked                              [ module(s) ]
 
 C:\c_code\gbdk\lib/small/asxxxx/gb/crt0.o
                                           [ Runtime ]
-C:\Users\User\AppData\Local\Temp/lcc132560.o
+C:\Users\User\AppData\Local\Temp/lcc37600.o
                                           [ main ]
-C:\Users\User\AppData\Local\Temp/lcc132561.o
+C:\Users\User\AppData\Local\Temp/lcc37601.o
                                           [ tile_detectivewalk ]
-C:\Users\User\AppData\Local\Temp/lcc132562.o
+C:\Users\User\AppData\Local\Temp/lcc37602.o
                                           [ cig_shine ]
-C:\Users\User\AppData\Local\Temp/lcc132563.o
+C:\Users\User\AppData\Local\Temp/lcc37603.o
                                           [ smoke ]
 
 

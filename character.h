@@ -1,6 +1,7 @@
 // #ifndef CHARACTER_H //if its not defined, then proceed to line 2 and define it.
 // #define CHARACTER_H
 //pragma once is a stronger method to ifndef <-> endif
+//it makes sure that the header file is only included once
 #pragma once
 #include <stdio.h>
 #include <gb/font.h>

@@ -9,6 +9,7 @@
 #include "tiles/smoke.h"
 #include "character.h"
 #include "character_smoke.h"
+#include "macros.h"
 
 UBYTE running = 1;
 joypads_t joypads;
@@ -17,35 +18,6 @@ CharacterSmoke smoke;
 
 // Blank tile. (h3's workaround to hide the smoke bc blank_tile wasnt working)
 const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-// Sprite delays (60 = 1 second)
-#define FRAME_DELAY 7
-#define SMOKE_DELAY 9             //walking smoke animation frame delay
-#define SMOKE_IDLE_DELAY 11       //standing smoke animation frame delay
-#define SMOKE_IDLE_START_DELAY 30 //pause time between smoke puffs
-#define SMOKE_WALK_START_DELAY 5
-
-//SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
-//0 in the OAM
-
-//amount of sprites
-// #define DETECTIVE_BODY_SPRITE_COUNT 4
-#define SMOKE_SMOKE_SPRITE_INDEX 0                     //OAM
-UBYTE smoke_tile_count = SMOKE_SMOKE_SPRITE_INDEX + 2; //assures ShadowOAM only effects the smoke tiles
-#define DETECTIVE_CIG_SHINE_SPRITE_INDEX 2             //OAM
-#define DETECTIVE_BODY_SPRITE_INDEX 4                  //OAM
-
-// DETECTIVE body stand
-#define DETECTIVE_BODY_STAND_FRAME 0
-// DETECTIVE body walk animations + smoke animations
-#define DETECTIVE_BODY_WALK_FRAME_START 0
-#define DETECTIVE_BODY_WALK_FRAME_END 3
-#define DETECTIVE_SMOKE_STAND_FRAME_START 0
-#define DETECTIVE_SMOKE_STAND_FRAME_END 5
-#define DETECTIVE_SMOKE_WALK_FRAME_START 6
-#define DETECTIVE_SMOKE_WALK_FRAME_END 10
-
-#define TILE_SIZE 8
 
 void load_detective_data(Character *detective, UINT8 first_tile)
 {
@@ -95,7 +67,7 @@ void update_detective(Character *detective, UINT8 x, UINT8 y)
 void update_smoke(CharacterSmoke *smoke, UINT8 x, UINT8 y)
 {
 
-    for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < smoke_tile_count; i++)
+    for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < SMOKE_TILE_COUNT; i++)
         shadow_OAM[i].y = 0;
 
     if (smoke->facing_right == 0)
