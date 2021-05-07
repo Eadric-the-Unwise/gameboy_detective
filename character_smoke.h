@@ -17,6 +17,7 @@ typedef struct CharacterSmoke
 
     UBYTE facing_right;
     UINT8 sprite_index;
+    UBYTE direction;
 
     UINT8 cig_shine_tile_index;
 

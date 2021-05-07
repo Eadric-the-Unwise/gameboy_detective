@@ -48,16 +48,22 @@ UBYTE can_detective_move(UINT8 x, UINT8 y)
 void update_detective(Character *detective, UINT8 x, UINT8 y)
 {
 
-    if (detective->facing_right == 0)
+    for (UBYTE i = DETECTIVE_CIG_SHINE_SPRITE_INDEX; i < DETECTIVE_CIG_SHINE_TILE_COUNT; i++)
+        shadow_OAM[i].y = 0;
+
+    if (detective->direction != FACE_RIGHT)
     {
-        // Facing left
+        // NOT FACING RIGHT
         move_metasprite(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
-        move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
+        if (detective->direction == FACE_LEFT)
+        {
+            move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
+        }
         // move_metasprite(smoke_metasprites[detective->smoke_frame_index], detective->smoke_tile_index, DETECTIVE_SMOKE_SPRITE_INDEX, x + TILE_SIZE, y - TILE_SIZE);
     }
     else
     {
-        // Facing right (Flip the sprites)
+        // FACE_RIGHT (Flip the sprites)
         move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
         move_metasprite_vflip(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
         // move_metasprite_vflip(smoke_metasprites[detective->smoke_frame_index], detective->smoke_tile_index, DETECTIVE_SMOKE_SPRITE_INDEX, x - TILE_SIZE, y - TILE_SIZE);
@@ -70,11 +76,11 @@ void update_smoke(CharacterSmoke *smoke, UINT8 x, UINT8 y)
     for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < SMOKE_TILE_COUNT; i++)
         shadow_OAM[i].y = 0;
 
-    if (smoke->facing_right == 0)
+    if (smoke->direction == FACE_LEFT)
     {
         move_metasprite(smoke_metasprites[smoke->smoke_frame_index], smoke->smoke_tile_index, SMOKE_SMOKE_SPRITE_INDEX, x + TILE_SIZE, y - TILE_SIZE);
     }
-    else
+    else if (smoke->direction == FACE_RIGHT)
     {
         move_metasprite_vflip(smoke_metasprites[smoke->smoke_frame_index], smoke->smoke_tile_index, SMOKE_SMOKE_SPRITE_INDEX, x - TILE_SIZE, y - TILE_SIZE);
     }
@@ -89,15 +95,12 @@ void setup_detective(Character *detective)
     detective->x = 100;
     detective->y = 130;
 
-    detective->facing_right = 0; // Set to RIGHT
+    detective->direction = FACE_LEFT; // Set to LEFT
 
     // detective body
     detective->body_animate = 0; // Set to OFF
     detective->body_frame_index = DETECTIVE_BODY_STAND_FRAME;
     detective->body_frame_delay = 0;
-    detective->smoke_frame_index = DETECTIVE_SMOKE_STAND_FRAME_START;
-    detective->smoke_frame_delay = 0;
-    detective->smoke_start_delay = 0;
 }
 
 void setup_smoke(CharacterSmoke *smoke)
@@ -109,7 +112,7 @@ void setup_smoke(CharacterSmoke *smoke)
     smoke->x = 70;
     smoke->y = 50;
 
-    smoke->facing_right = 0; // Set to RIGHT
+    smoke->facing_right = 0; // Set to LEFT
 
     // detective body
     smoke->body_animate = 0; // Set to OFF
@@ -156,9 +159,27 @@ void main(void)
             detective.body_frame_delay = FRAME_DELAY;
             detective.body_frame_index++;
 
-            if (detective.body_frame_index > DETECTIVE_BODY_WALK_FRAME_END)
-                // Reached the last frame. Reset to FRAME_START.
-                detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
+            if (detective.direction == FACE_LEFT || detective.direction == FACE_RIGHT)
+            {
+                if (detective.body_frame_index > DETECTIVE_BODY_WALK_FRAME_END)
+                {
+                    detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
+                }
+            }
+            else if (detective.direction == FACE_UP)
+            {
+                if (detective.body_frame_index > DETECTIVE_BODY_UP_FRAME_END)
+                {
+                    detective.body_frame_index = DETECTIVE_BODY_UP_FRAME_START;
+                }
+            }
+            else if (detective.direction == FACE_DOWN)
+            {
+                if (detective.body_frame_index > DETECTIVE_BODY_DOWN_FRAME_END)
+                {
+                    detective.body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
+                }
+            }
 
             detective.body_frame_delay = detective.body_frame_index % 2 ? FRAME_DELAY * 2 : FRAME_DELAY;
         }
@@ -179,7 +200,7 @@ void main(void)
                 {
                     smoke.x = detective.x;
                     smoke.y = detective.y;
-                    smoke.facing_right = detective.facing_right;
+                    smoke.facing_right = detective.direction == FACE_RIGHT; //returns a 0 or 1
                     smoke.body_animate = detective.body_animate;
                     smoke.smoke_frame_index = smoke.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
                 }
@@ -193,7 +214,7 @@ void main(void)
                 // Reached the last frame. Reset to FRAME_START.
                 {
                     smoke.smoke_frame_index = 0;
-
+                    smoke.direction = detective.direction;
                     smoke.smoke_start_delay = (detective.body_animate ? SMOKE_WALK_START_DELAY : SMOKE_IDLE_START_DELAY);
                 }
             }
@@ -202,11 +223,13 @@ void main(void)
         {
 
             // Move left
-            if (detective.facing_right == 1)
+            if (detective.direction != FACE_LEFT)
             { // if previously facing right...
                 // ...change to facing left
                 detective.updated = 1;
-                detective.facing_right = 0;
+                detective.direction = FACE_LEFT;
+                detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
+                detective.body_frame_delay = 0;
             }
 
             if (can_detective_move(detective.x - 1, detective.y))
@@ -217,19 +240,18 @@ void main(void)
                 {
                     // started moving for the first time
                     detective.body_animate = 1;
-                    detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
                 }
             }
         }
         else if (joypads.joy0 & J_RIGHT)
         {
             // Move right
-            if (detective.facing_right == 0)
-            { // if previously facing left...
-                // ...change to facing right
+            if (detective.direction != FACE_RIGHT)
+            {
                 detective.updated = 1;
-                detective.facing_right = 1;
-                detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
+                detective.direction = FACE_RIGHT;
+                detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
+                detective.body_frame_delay = 0;
             }
 
             if (can_detective_move(detective.x + 1, detective.y))
@@ -240,22 +262,29 @@ void main(void)
                 {
                     // started moving for the first time
                     detective.body_animate = 1;
-                    detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
                 }
             }
         }
         if (joypads.joy0 & J_UP)
         {
+            // Move up
+            if (detective.direction != FACE_UP && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
+            {
+                detective.updated = 1;
+                detective.direction = FACE_UP;
+                detective.body_frame_index = DETECTIVE_BODY_UP_FRAME_START;
+                detective.body_frame_delay = 0;
+            }
 
             if (can_detective_move(detective.x, detective.y - 1))
             {
                 detective.updated = 1;
                 detective.y -= 1;
+
                 if (detective.body_animate == 0)
                 {
                     // started moving for the first time
                     detective.body_animate = 1;
-                    detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
                 }
             }
         }
@@ -263,6 +292,14 @@ void main(void)
         else if (joypads.joy0 & J_DOWN)
         {
 
+            // Move down
+            if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
+            {
+                detective.updated = 1;
+                detective.direction = FACE_DOWN;
+                detective.body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
+                detective.body_frame_delay = 0;
+            }
             if (can_detective_move(detective.x, detective.y + 1))
             {
                 detective.updated = 1;
@@ -271,7 +308,6 @@ void main(void)
                 {
                     // started moving for the first time
                     detective.body_animate = 1;
-                    detective.smoke_frame_index = DETECTIVE_SMOKE_WALK_FRAME_START;
                 }
             }
         }
@@ -288,8 +324,19 @@ void main(void)
 
                 // Stop body animation
                 detective.body_animate = 0; // Set body animation to OFF
-                detective.body_frame_index = DETECTIVE_BODY_STAND_FRAME;
-                // detective.smoke_frame_index = DETECTIVE_SMOKE_STAND_FRAME_START;
+
+                if (detective.direction == FACE_LEFT || detective.direction == FACE_RIGHT)
+                {
+                    detective.body_frame_index = DETECTIVE_BODY_STAND_FRAME;
+                }
+                else if (detective.direction == FACE_UP)
+                {
+                    detective.body_frame_index = DETECTIVE_BODY_UP_STAND_FRAME;
+                }
+                else if (detective.direction == FACE_DOWN)
+                {
+                    detective.body_frame_index = DETECTIVE_BODY_DOWN_STAND_FRAME;
+                }
             }
             // SMOKE Not moving
             if (smoke.body_animate == 1 || smoke.body_frame_index != DETECTIVE_BODY_STAND_FRAME)
@@ -322,9 +369,6 @@ void main(void)
         // The amount of delay between frame animation. Decrement animation delays
         if (detective.body_frame_delay > 0)
             detective.body_frame_delay--;
-
-        if (detective.smoke_frame_delay > 0)
-            detective.smoke_frame_delay--;
 
         if (smoke.body_frame_delay > 0)
             smoke.body_frame_delay--;
