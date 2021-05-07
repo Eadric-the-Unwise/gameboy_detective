@@ -4,8 +4,8 @@
 #define FRAME_DELAY 7
 #define SMOKE_DELAY 9             //walking smoke animation frame delay
 #define SMOKE_IDLE_DELAY 11       //standing smoke animation frame delay
-#define SMOKE_IDLE_START_DELAY 30 //pause time between smoke puffs
-#define SMOKE_WALK_START_DELAY 5
+#define SMOKE_IDLE_START_DELAY 90 //pause time between smoke puffs
+#define SMOKE_WALK_START_DELAY 0
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM

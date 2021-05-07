@@ -76,11 +76,13 @@ void update_smoke(CharacterSmoke *smoke, UINT8 x, UINT8 y)
     for (UBYTE i = SMOKE_SMOKE_SPRITE_INDEX; i < SMOKE_TILE_COUNT; i++)
         shadow_OAM[i].y = 0;
 
-    if (smoke->direction == FACE_LEFT)
+    if (smoke->direction != FACE_RIGHT)
     {
         move_metasprite(smoke_metasprites[smoke->smoke_frame_index], smoke->smoke_tile_index, SMOKE_SMOKE_SPRITE_INDEX, x + TILE_SIZE, y - TILE_SIZE);
     }
-    else if (smoke->direction == FACE_RIGHT)
+    //else if = EITHER THIS OR THIS (no others allowed)
+    //else = Anything other than the if is okay
+    else
     {
         move_metasprite_vflip(smoke_metasprites[smoke->smoke_frame_index], smoke->smoke_tile_index, SMOKE_SMOKE_SPRITE_INDEX, x - TILE_SIZE, y - TILE_SIZE);
     }
@@ -202,7 +204,16 @@ void main(void)
                     smoke.y = detective.y;
                     smoke.facing_right = detective.direction == FACE_RIGHT; //returns a 0 or 1
                     smoke.body_animate = detective.body_animate;
+                    smoke.direction = detective.direction;
                     smoke.smoke_frame_index = smoke.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
+                    if (smoke.direction == FACE_UP && !smoke.body_animate)
+                    {
+                        smoke.direction = FACE_RIGHT;
+                    }
+                    else if (smoke.direction == FACE_DOWN && !smoke.body_animate)
+                    {
+                        smoke.direction = FACE_LEFT;
+                    }
                 }
 
                 // if (smoke.smoke_start_delay == 0)
@@ -214,7 +225,7 @@ void main(void)
                 // Reached the last frame. Reset to FRAME_START.
                 {
                     smoke.smoke_frame_index = 0;
-                    smoke.direction = detective.direction;
+
                     smoke.smoke_start_delay = (detective.body_animate ? SMOKE_WALK_START_DELAY : SMOKE_IDLE_START_DELAY);
                 }
             }
