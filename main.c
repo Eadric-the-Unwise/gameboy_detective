@@ -61,7 +61,7 @@ void load_detective_data(Character *detective, UINT8 first_tile)
 void load_smoke_data(CharacterSmoke *smoke, UINT8 first_tile)
 {
     first_tile += (sizeof(tile_detectivewalk_data) >> 4) + (sizeof(cig_shine_data) >> 4);
-    //smoke index loads in the OAM + the tile number of Detective + cig_shine
+    //smoke index loads in the OAM + the tile number of Detective + cig_shine tiles
     smoke->smoke_tile_index = first_tile;
     set_sprite_data(smoke->smoke_tile_index, (sizeof(smoke_data) >> 4), smoke_data);
 }
