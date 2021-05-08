@@ -59,6 +59,10 @@ void update_detective(Character *detective, UINT8 x, UINT8 y)
         {
             move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
         }
+        if (detective->direction == FACE_DOWN)
+        {
+            move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
+        }
         // move_metasprite(smoke_metasprites[detective->smoke_frame_index], detective->smoke_tile_index, DETECTIVE_SMOKE_SPRITE_INDEX, x + TILE_SIZE, y - TILE_SIZE);
     }
     else
@@ -131,7 +135,7 @@ void main(void)
     SHOW_SPRITES;
 
     OBP1_REG = 0xE1;
-    BGP_REG = 0x1B;
+    BGP_REG = 0x4E;
 
     Character detective;
     CharacterSmoke smoke;
