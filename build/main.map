@@ -69,13 +69,13 @@ Area                       Addr        Size        Decimal Bytes (Attributes)
      00000002  l__HEADER |    00000002  l__HEADER |    00000003  l__HEADER
      00000003  l__HRAM11 |    00000005  l__HEADER |    00000006  l__HEADER
      00000007  l__HEADER |    00000008  l__HEADER |    0000000A  l__GSINIT
-     00000018  l__BSS    |    00000023  l__DATA   |    0000002C  l__HEADER
+     00000018  l__BSS    |    00000024  l__DATA   |    0000002C  l__HEADER
      00000033  l__HEADER |    0000006A  l__HOME   |    00000083  l__HEADER
      000000C8  l__BASE   |    00000200  s__CODE   |    00000F25  l__CODE  
      00001125  s__HOME   |    0000118F  s__BASE   |    00001257  s__CODE_0
      00001257  s__GSINIT |    00001257  s__LIT    |    00001261  s__GSFINA
-     0000C000  _shadow_O |    0000C0A0  s__DATA   |    0000C0C3  s__BSS   
-     0000C0DB  s__HEAP   |    0000E000  .STACK    |    0000FF80  .refresh_
+     0000C000  _shadow_O |    0000C0A0  s__DATA   |    0000C0C4  s__BSS   
+     0000C0DC  s__HEAP   |    0000E000  .STACK    |    0000FF80  .refresh_
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
@@ -311,24 +311,24 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_DATA                  0000C0A0    00000023 =          35. bytes (REL,CON)
+_DATA                  0000C0A0    00000024 =          36. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
      0000C0A0  _running  |    0000C0A1  _joypads  |    0000C0A6  _detectiv
-     0000C0B0  _smoke    |    0000C0BF  ___curren |    0000C0C1  ___curren
-     0000C0C2  ___render
+     0000C0B1  _smoke    |    0000C0C0  ___curren |    0000C0C2  ___curren
+     0000C0C3  ___render
 ASxxxx Linker V03.00 + NoICE + sdld,  page 26.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_BSS                   0000C0C3    00000018 =          24. bytes (REL,CON)
+_BSS                   0000C0C4    00000018 =          24. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000C0C3  __cpu     |    0000C0C4  .mode     |    0000C0C5  .sys_time
-     0000C0C5  _sys_time |    0000C0C7  .int_0x40
+     0000C0C4  __cpu     |    0000C0C5  .mode     |    0000C0C6  .sys_time
+     0000C0C6  _sys_time |    0000C0C8  .int_0x40
 ASxxxx Linker V03.00 + NoICE + sdld,  page 27.
 Hexadecimal  [32-Bits]
 
@@ -895,13 +895,13 @@ Files Linked                              [ module(s) ]
 
 C:\c_code\gbdk\lib/small/asxxxx/gb/crt0.o
                                           [ Runtime ]
-C:\Users\User\AppData\Local\Temp/lcc84040.o
+C:\Users\User\AppData\Local\Temp/lcc108400.o
                                           [ main ]
-C:\Users\User\AppData\Local\Temp/lcc84041.o
+C:\Users\User\AppData\Local\Temp/lcc108401.o
                                           [ tile_detectivewalk ]
-C:\Users\User\AppData\Local\Temp/lcc84042.o
+C:\Users\User\AppData\Local\Temp/lcc108402.o
                                           [ cig_shine ]
-C:\Users\User\AppData\Local\Temp/lcc84043.o
+C:\Users\User\AppData\Local\Temp/lcc108403.o
                                           [ smoke ]
 
 
