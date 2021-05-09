@@ -47,8 +47,8 @@ UBYTE can_detective_move(UINT8 x, UINT8 y)
 
 void update_detective(Character *detective, UINT8 x, UINT8 y)
 {
-
-    for (UBYTE i = DETECTIVE_CIG_SHINE_SPRITE_INDEX; i < DETECTIVE_CIG_SHINE_TILE_COUNT; i++)
+    detective->cig_shine_tile_count = DETECTIVE_CIG_SHINE_SPRITE_INDEX + sizeof(cig_shine_data) >> 4;
+    for (UBYTE i = DETECTIVE_CIG_SHINE_SPRITE_INDEX; i < detective->cig_shine_tile_count; i++)
         shadow_OAM[i].y = 0;
 
     if (detective->direction != FACE_RIGHT)
@@ -63,14 +63,12 @@ void update_detective(Character *detective, UINT8 x, UINT8 y)
         {
             move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
         }
-        // move_metasprite(smoke_metasprites[detective->smoke_frame_index], detective->smoke_tile_index, DETECTIVE_SMOKE_SPRITE_INDEX, x + TILE_SIZE, y - TILE_SIZE);
     }
     else
     {
         // FACE_RIGHT (Flip the sprites)
         move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
         move_metasprite_vflip(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
-        // move_metasprite_vflip(smoke_metasprites[detective->smoke_frame_index], detective->smoke_tile_index, DETECTIVE_SMOKE_SPRITE_INDEX, x - TILE_SIZE, y - TILE_SIZE);
     }
 }
 

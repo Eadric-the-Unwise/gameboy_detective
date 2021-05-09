@@ -21,7 +21,7 @@ typedef struct Character
     UINT8 sprite_index;
 
     UINT8 cig_shine_tile_index;
-    UINT8 cig_shine_down;
+    UINT8 cig_shine_tile_count;
 
     // Body Metasprite
     UBYTE body_animate;
