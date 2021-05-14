@@ -16,6 +16,7 @@ joypads_t joypads;
 Character detective;
 CharacterSmoke smoke;
 UINT8 hiwater;
+UBYTE updated;
 
 // Blank tile. (h3's workaround to hide the smoke bc blank_tile wasnt working)
 const unsigned char blank_data[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -92,8 +93,6 @@ UINT8 update_smoke(CharacterSmoke *smoke, UINT8 x, UINT8 y, UINT8 hiwater)
 
 void setup_detective(Character *detective)
 {
-    // Make sure update_detective() is called.
-    detective->updated = 1;
 
     // Initial position
     detective->x = 100;
@@ -109,8 +108,6 @@ void setup_detective(Character *detective)
 
 void setup_smoke(CharacterSmoke *smoke)
 {
-    // Make sure update_detective() is called.
-    smoke->updated = 1;
 
     // Initial position
     smoke->x = 70;
@@ -131,6 +128,7 @@ void main(void)
     DISPLAY_ON;
     SHOW_BKG;
     SHOW_SPRITES;
+    SPRITES_8x16;
 
     OBP1_REG = 0xE1;
     BGP_REG = 0x4E;
@@ -161,7 +159,7 @@ void main(void)
         if (detective.body_animate == 1 && detective.body_frame_delay == 0)
         {
             // Animate the body when detective is moving.
-            detective.updated = 1;
+            updated = 1;
             detective.body_frame_delay = FRAME_DELAY;
             detective.body_frame_index++;
 
@@ -198,7 +196,7 @@ void main(void)
             {
 
                 // Animate the smoke when detective is moving.
-                smoke.updated = 1;
+                updated = 1;
 
                 smoke.smoke_frame_delay = smoke.body_animate ? SMOKE_DELAY : SMOKE_IDLE_DELAY;
 
@@ -241,7 +239,7 @@ void main(void)
             if (detective.direction != FACE_LEFT)
             { // if previously facing right...
                 // ...change to facing left
-                detective.updated = 1;
+                updated = 1;
                 detective.direction = FACE_LEFT;
                 detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
                 detective.body_frame_delay = 0;
@@ -249,7 +247,7 @@ void main(void)
 
             if (can_detective_move(detective.x - 1, detective.y))
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.x -= 1;
                 if (detective.body_animate == 0)
                 {
@@ -263,7 +261,7 @@ void main(void)
             // Move right
             if (detective.direction != FACE_RIGHT)
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.direction = FACE_RIGHT;
                 detective.body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
                 detective.body_frame_delay = 0;
@@ -271,7 +269,7 @@ void main(void)
 
             if (can_detective_move(detective.x + 1, detective.y))
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.x += 1;
                 if (detective.body_animate == 0)
                 {
@@ -285,7 +283,7 @@ void main(void)
             // Move up
             if (detective.direction != FACE_UP && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.direction = FACE_UP;
                 detective.body_frame_index = DETECTIVE_BODY_UP_FRAME_START;
                 detective.body_frame_delay = 0;
@@ -293,7 +291,7 @@ void main(void)
 
             if (can_detective_move(detective.x, detective.y - 1))
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.y -= 1;
 
                 if (detective.body_animate == 0)
@@ -310,14 +308,14 @@ void main(void)
             // Move down
             if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.direction = FACE_DOWN;
                 detective.body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
                 detective.body_frame_delay = 0;
             }
             if (can_detective_move(detective.x, detective.y + 1))
             {
-                detective.updated = 1;
+                updated = 1;
                 detective.y += 1;
                 if (detective.body_animate == 0)
                 {
@@ -335,7 +333,7 @@ void main(void)
                 // If body is animated OR body frame is not STAND_FRAME.
 
                 // Make sure update_detective() is called.
-                detective.updated = 1;
+                updated = 1;
 
                 // Stop body animation
                 detective.body_animate = 0; // Set body animation to OFF
@@ -359,7 +357,7 @@ void main(void)
                 // If body is animated OR body frame is not STAND_FRAME.
 
                 // Make sure update_detective() is called.
-                smoke.updated = 1;
+                updated = 1;
 
                 // Stop body animation
 
@@ -368,13 +366,12 @@ void main(void)
             }
         }
 
-        if (detective.updated == 1 || smoke.updated == 1)
+        if (updated == 1)
         {
             UINT8 sprite_hiwater = 0;
             // If there's been any changes, update the metasprite.
-            smoke.updated = 0;
+            updated = 0;
             sprite_hiwater = update_smoke(&smoke, smoke.x, smoke.y, sprite_hiwater);
-            detective.updated = 0;
             sprite_hiwater = update_detective(&detective, detective.x, detective.y, sprite_hiwater);
 
             for (UBYTE i = sprite_hiwater; i < 40; i++)

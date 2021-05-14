@@ -10,7 +10,6 @@
 typedef struct CharacterSmoke
 {
     // When this is set to 1, the update_toad() function will be called.
-    UBYTE updated;
 
     UINT8 x;
     UINT8 y;
