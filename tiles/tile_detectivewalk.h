@@ -5,5 +5,5 @@
 #define tile_detectivewalk_PIVOT_X 8
 #define tile_detectivewalk_PIVOT_Y 8
 
-extern const UINT8 tile_detectivewalk_data[464];
+extern const UINT8 tile_detectivewalk_data[384];
 extern const metasprite_t* const tile_detectivewalk_metasprites[12];

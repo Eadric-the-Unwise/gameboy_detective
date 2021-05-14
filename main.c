@@ -47,6 +47,7 @@ UBYTE can_detective_move(UINT8 x, UINT8 y)
 
 void update_detective(Character *detective, UINT8 x, UINT8 y)
 {
+
     detective->cig_shine_tile_count = DETECTIVE_CIG_SHINE_SPRITE_INDEX + sizeof(cig_shine_data) >> 4;
     for (UBYTE i = DETECTIVE_CIG_SHINE_SPRITE_INDEX; i < detective->cig_shine_tile_count; i++)
         shadow_OAM[i].y = 0;
@@ -55,20 +56,14 @@ void update_detective(Character *detective, UINT8 x, UINT8 y)
     {
         // NOT FACING RIGHT
         move_metasprite(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
-        if (detective->direction == FACE_LEFT)
-        {
-            move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
-        }
-        if (detective->direction == FACE_DOWN)
-        {
-            move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
-        }
+        move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
     }
     else
     {
         // FACE_RIGHT (Flip the sprites)
         move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, DETECTIVE_BODY_SPRITE_INDEX, x, y);
         move_metasprite_vflip(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, DETECTIVE_CIG_SHINE_SPRITE_INDEX, x, y);
+        hide_sprite(DETECTIVE_CIG_SPRITE);
     }
 }
 
@@ -208,7 +203,7 @@ void main(void)
                     smoke.body_animate = detective.body_animate;
                     smoke.direction = detective.direction;
                     smoke.smoke_frame_index = smoke.body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
-                    if (smoke.direction == FACE_UP && !smoke.body_animate)
+                    if (smoke.direction == FACE_UP)
                     {
                         smoke.direction = FACE_RIGHT;
                     }

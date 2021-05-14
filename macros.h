@@ -15,6 +15,7 @@
 #define SMOKE_SMOKE_SPRITE_INDEX 0                      //OAM
 #define SMOKE_TILE_COUNT (SMOKE_SMOKE_SPRITE_INDEX + 2) //assures ShadowOAM only effects the smoke tiles
 #define DETECTIVE_CIG_SHINE_SPRITE_INDEX 2              //OAM
+#define DETECTIVE_CIG_SPRITE 3
 // #define DETECTIVE_CIG_SHINE_TILE_COUNT (DETECTIVE_CIG_SHINE_SPRITE_INDEX + 2)
 
 #define DETECTIVE_BODY_SPRITE_INDEX 5 //OAM

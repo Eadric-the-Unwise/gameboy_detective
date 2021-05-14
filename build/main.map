@@ -71,9 +71,9 @@ Area                       Addr        Size        Decimal Bytes (Attributes)
      00000007  l__HEADER |    00000008  l__HEADER |    0000000A  l__GSINIT
      00000018  l__BSS    |    00000024  l__DATA   |    0000002C  l__HEADER
      00000033  l__HEADER |    0000006A  l__HOME   |    00000083  l__HEADER
-     000000C8  l__BASE   |    00000200  s__CODE   |    0000100D  l__CODE  
-     0000120D  s__HOME   |    00001277  s__BASE   |    0000133F  s__CODE_0
-     0000133F  s__GSINIT |    0000133F  s__LIT    |    00001349  s__GSFINA
+     000000C8  l__BASE   |    00000200  s__CODE   |    00000F7A  l__CODE  
+     0000117A  s__HOME   |    000011E4  s__BASE   |    000012AC  s__CODE_0
+     000012AC  s__GSINIT |    000012AC  s__LIT    |    000012B6  s__GSFINA
      0000C000  _shadow_O |    0000C0A0  s__DATA   |    0000C0C4  s__BSS   
      0000C0DC  s__HEAP   |    0000E000  .STACK    |    0000FF80  .refresh_
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
@@ -81,31 +81,31 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_CODE                  00000200    0000100D =        4109. bytes (REL,CON)
+_CODE                  00000200    00000F7A =        3962. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
      00000200  _load_det |    0000023B  _blank_da |    0000024B  _load_smo
-     00000272  _can_dete |    0000028F  _update_d |    000003FD  _update_s
-     00000498  _setup_de |    000004C4  _setup_sm |    00000502  _main    
-     00000B93  _tile_det |    00000D63  _tile_det |    00000D77  _tile_det
-     00000D8B  _tile_det |    00000D9F  _tile_det |    00000DB3  _tile_det
-     00000DC7  _tile_det |    00000DDB  _tile_det |    00000DEF  _tile_det
-     00000E03  _tile_det |    00000E17  _tile_det |    00000E2B  _tile_det
-     00000E3F  _tile_det |    00000E53  _tile_det |    00000E6B  _cig_shin
-     00000EEB  _cig_shin |    00000EF7  _cig_shin |    00000F03  _cig_shin
-     00000F0F  _cig_shin |    00000F1B  _cig_shin |    00000F1F  _cig_shin
-     00000F23  _cig_shin |    00000F27  _cig_shin |    00000F2B  _cig_shin
-     00000F37  _cig_shin |    00000F47  _cig_shin |    00000F53  _cig_shin
-     00000F63  _cig_shin |    00000F7B  _smoke_da |    00000FFB  _smoke_me
-     00000FFF  _smoke_me |    00001007  _smoke_me |    0000100F  _smoke_me
-     0000101B  _smoke_me |    00001023  _smoke_me |    0000102B  _smoke_me
-     0000102F  _smoke_me |    00001037  _smoke_me |    0000103F  _smoke_me
-     00001051  ___move_m |    00001089  ___hide_m |    000010A9  .sgb_chec
-     000010A9  _sgb_chec |    000010FA  _sgb_tran |    00001108  _sgb_tran
-     00001113  .sgb_tran |    00001145  .sgb_wait |    00001151  .MLT_REQ_
-     00001153  .MLT_REQ_ |    00001155  .MLT_REQ_ |    00001157  ___move_m
-     00001193  ___move_m |    000011CF  ___move_m
+     00000272  _can_dete |    0000028F  _update_d |    000003B7  _update_s
+     00000452  _setup_de |    0000047E  _setup_sm |    000004BC  _main    
+     00000B40  _tile_det |    00000CC0  _tile_det |    00000CD4  _tile_det
+     00000CE8  _tile_det |    00000CFC  _tile_det |    00000D10  _tile_det
+     00000D24  _tile_det |    00000D38  _tile_det |    00000D4C  _tile_det
+     00000D60  _tile_det |    00000D74  _tile_det |    00000D88  _tile_det
+     00000D9C  _tile_det |    00000DB0  _tile_det |    00000DC8  _cig_shin
+     00000E48  _cig_shin |    00000E54  _cig_shin |    00000E60  _cig_shin
+     00000E6C  _cig_shin |    00000E78  _cig_shin |    00000E80  _cig_shin
+     00000E88  _cig_shin |    00000E90  _cig_shin |    00000E98  _cig_shin
+     00000EA4  _cig_shin |    00000EB4  _cig_shin |    00000EC0  _cig_shin
+     00000ED0  _cig_shin |    00000EE8  _smoke_da |    00000F68  _smoke_me
+     00000F6C  _smoke_me |    00000F74  _smoke_me |    00000F7C  _smoke_me
+     00000F88  _smoke_me |    00000F90  _smoke_me |    00000F98  _smoke_me
+     00000F9C  _smoke_me |    00000FA4  _smoke_me |    00000FAC  _smoke_me
+     00000FBE  ___move_m |    00000FF6  ___hide_m |    00001016  .sgb_chec
+     00001016  _sgb_chec |    00001067  _sgb_tran |    00001075  _sgb_tran
+     00001080  .sgb_tran |    000010B2  .sgb_wait |    000010BE  .MLT_REQ_
+     000010C0  .MLT_REQ_ |    000010C2  .MLT_REQ_ |    000010C4  ___move_m
+     00001100  ___move_m |    0000113C  ___move_m
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
@@ -271,41 +271,41 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_HOME                  0000120D    0000006A =         106. bytes (REL,CON)
+_HOME                  0000117A    0000006A =         106. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000120D  .remove_V |    00001210  .remove_i |    0000122D  .add_VBL 
-     00001230  .add_int  |    0000123B  .wait_vbl |    0000123B  _wait_vbl
-     0000124A  .display_ |    0000124A  _display_ |    00001261  _remove_V
-     0000126C  _add_VBL 
+     0000117A  .remove_V |    0000117D  .remove_i |    0000119A  .add_VBL 
+     0000119D  .add_int  |    000011A8  .wait_vbl |    000011A8  _wait_vbl
+     000011B7  .display_ |    000011B7  _display_ |    000011CE  _remove_V
+     000011D9  _add_VBL 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_BASE                  00001277    000000C8 =         200. bytes (REL,CON)
+_BASE                  000011E4    000000C8 =         200. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     00001277  _set_bkg_ |    00001277  _set_win_ |    0000127F  _set_spri
-     000012AF  _joypad_i |    000012F5  _joypad_e |    000012FA  .joypad_e
+     000011E4  _set_bkg_ |    000011E4  _set_win_ |    000011EC  _set_spri
+     0000121C  _joypad_i |    00001262  _joypad_e |    00001267  .joypad_e
 ASxxxx Linker V03.00 + NoICE + sdld,  page 23.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_GSINIT                0000133F    0000000A =          10. bytes (REL,CON)
+_GSINIT                000012AC    0000000A =          10. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000133F  gsinit   
+     000012AC  gsinit   
 ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_GSFINAL               00001349    00000001 =           1. bytes (REL,CON)
+_GSFINAL               000012B6    00000001 =           1. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
@@ -898,13 +898,13 @@ Files Linked                              [ module(s) ]
 
 C:\c_code\gbdk\lib/small/asxxxx/gb/crt0.o
                                           [ Runtime ]
-C:\Users\User\AppData\Local\Temp/lcc64880.o
+C:\Users\User\AppData\Local\Temp/lcc8920.o
                                           [ main ]
-C:\Users\User\AppData\Local\Temp/lcc64881.o
+C:\Users\User\AppData\Local\Temp/lcc8921.o
                                           [ tile_detectivewalk ]
-C:\Users\User\AppData\Local\Temp/lcc64882.o
+C:\Users\User\AppData\Local\Temp/lcc8922.o
                                           [ cig_shine ]
-C:\Users\User\AppData\Local\Temp/lcc64883.o
+C:\Users\User\AppData\Local\Temp/lcc8923.o
                                           [ smoke ]
 
 
