@@ -1,0 +1,1 @@
+C:\c_code\Utilities\ImageMagick\convert.exe ..\tiles\bkg_forest1.png -alpha off bkg_forest1_deletethis.png

@@ -10,6 +10,8 @@
 #include "character.h"
 #include "character_smoke.h"
 #include "macros.h"
+#include "maps/bkg_forest1_map.h"
+#include "maps/bkg_forest1_tiles.h"
 
 UBYTE running = 1;
 joypads_t joypads;
@@ -58,12 +60,14 @@ UINT8 update_detective(Character *detective, UINT8 x, UINT8 y, UINT8 hiwater)
     if (detective->direction != FACE_RIGHT)
     {
         // NOT FACING RIGHT
+        //move_metasprite returns a value (which?)
         hiwater += move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, hiwater, x, y);
         hiwater += move_metasprite(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, hiwater, x, y);
     }
     else
     {
         // FACE_RIGHT (Flip the sprites)
+        //move_metasprite returns a value (which?)
         UINT8 cig_sprite = hiwater + 1;
         hiwater += move_metasprite_vflip(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, hiwater, x, y);
         hiwater += move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, hiwater, x, y);
@@ -128,7 +132,7 @@ void main(void)
     SPRITES_8x16;
 
     OBP1_REG = 0xE1;
-    BGP_REG = 0xB4;
+    BGP_REG = 0xE4;
 
     Character detective;
     CharacterSmoke smoke;
@@ -139,11 +143,16 @@ void main(void)
     tile_hiwater = load_detective_data(&detective, tile_hiwater); //copies value 0 then updates with return
     tile_hiwater = load_smoke_data(&smoke, tile_hiwater);         //copies Detective tile count then updates with return
 
+    // set_bkg_data(256, 53, 848);
+
     // Set initial detective values.
     setup_detective(&detective);
     setup_smoke(&smoke);
 
     joypad_init(1, &joypads);
+
+    set_bkg_data(0, BKG_FOREST1_TILE_COUNT, bkg_forest1_tiles);
+    set_bkg_tiles(0, 0, BKG_FOREST1_MAP_WIDTH, BKG_FOREST1_MAP_HEIGHT, bkg_forest1_map);
 
     while (running)
     {
@@ -185,7 +194,6 @@ void main(void)
         //SMOKE ANIMATION BELOW
         if (smoke.smoke_start_delay == 0)
         {
-
             if (smoke.smoke_frame_delay == 0 || smoke.smoke_frame_index == 0)
             {
 
@@ -228,7 +236,6 @@ void main(void)
         }
         if (joypads.joy0 & J_LEFT)
         {
-
             // Move left
             if (detective.direction != FACE_LEFT)
             { // if previously facing right...
@@ -298,7 +305,6 @@ void main(void)
 
         else if (joypads.joy0 & J_DOWN)
         {
-
             // Move down
             if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
