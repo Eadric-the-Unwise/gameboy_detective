@@ -10,8 +10,8 @@
 #include "character.h"
 #include "character_smoke.h"
 #include "macros.h"
-#include "maps/bkg_forest1_map.h"
-#include "maps/bkg_forest1_tiles.h"
+#include "maps/dk_bkg1_map.h"
+#include "maps/dk_bkg1_tiles.h"
 
 UBYTE running = 1;
 joypads_t joypads;
@@ -59,16 +59,18 @@ UINT8 update_detective(Character *detective, UINT8 x, UINT8 y, UINT8 hiwater)
 
     if (detective->direction != FACE_RIGHT)
     {
+        //hiwater is replaced by variable on call (in this case, 0)
         // NOT FACING RIGHT
-        //move_metasprite returns a value (which?)
+        //move_metasprite returns it's sprite count
         hiwater += move_metasprite(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, hiwater, x, y);
         hiwater += move_metasprite(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, hiwater, x, y);
     }
     else
     {
         // FACE_RIGHT (Flip the sprites)
-        //move_metasprite returns a value (which?)
+        //move_metasprite returns it's sprite count
         UINT8 cig_sprite = hiwater + 1;
+
         hiwater += move_metasprite_vflip(cig_shine_metasprites[detective->body_frame_index], detective->cig_shine_tile_index, hiwater, x, y);
         hiwater += move_metasprite_vflip(tile_detectivewalk_metasprites[detective->body_frame_index], detective->body_tile_index, hiwater, x, y);
         hide_sprite(cig_sprite);
@@ -151,8 +153,10 @@ void main(void)
 
     joypad_init(1, &joypads);
 
-    set_bkg_data(0, BKG_FOREST1_TILE_COUNT, bkg_forest1_tiles);
-    set_bkg_tiles(0, 0, BKG_FOREST1_MAP_WIDTH, BKG_FOREST1_MAP_HEIGHT, bkg_forest1_map);
+    //set_bkg_data is actually what loads the tile images into VRAM memory
+    //set_bkg_tiles is what loads the map in the Map Layer Screen
+    set_bkg_data(0, DK_BKG1_TILE_COUNT, dk_bkg1_tiles);
+    set_bkg_tiles(0, 0, DK_BKG1_MAP_WIDTH, DK_BKG1_MAP_HEIGHT, dk_bkg1_map);
 
     while (running)
     {

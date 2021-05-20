@@ -4,6 +4,6 @@
 */
 #pragma once
 
-#define BKG_FOREST1_TILE_COUNT 57
+#define BKG_FOREST1_TILE_COUNT 56
 
-extern const unsigned char bkg_forest1_tiles[912];
+extern const unsigned char bkg_forest1_tiles[896];
