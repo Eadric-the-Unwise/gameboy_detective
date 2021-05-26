@@ -127,6 +127,7 @@ void animate_detective(Character *detective)
 
         if (detective->direction == FACE_LEFT || detective->direction == FACE_RIGHT)
         {
+            smoke.facing_LR = 1;
             if (detective->body_frame_index > DETECTIVE_BODY_WALK_FRAME_END)
             {
                 detective->body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
@@ -134,6 +135,7 @@ void animate_detective(Character *detective)
         }
         else if (detective->direction == FACE_UP)
         {
+            smoke.facing_LR = 0;
             if (detective->body_frame_index > DETECTIVE_BODY_UP_FRAME_END)
             {
                 detective->body_frame_index = DETECTIVE_BODY_UP_FRAME_START;
@@ -141,6 +143,7 @@ void animate_detective(Character *detective)
         }
         else if (detective->direction == FACE_DOWN)
         {
+            smoke.facing_LR = 0;
             if (detective->body_frame_index > DETECTIVE_BODY_DOWN_FRAME_END)
             {
                 detective->body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
@@ -161,11 +164,13 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
     {
         // Start smoke
         smoke->state = PLAYING;
+        smoke_walk_FRAME_START = smoke->facing_LR ? DETECTIVE_SMOKE_WALK_LR_FRAME_START : DETECTIVE_SMOKE_WALK_UPDOWN_FRAME_START;
+        smoke_walk_FRAME_END = smoke->facing_LR ? DETECTIVE_SMOKE_WALK_LR_FRAME_END : DETECTIVE_SMOKE_WALK_UPDOWN_FRAME_END;
 
         smoke->x = detective->x;
         smoke->y = detective->y;
         smoke->body_animate = detective->body_animate;
-        smoke->smoke_frame_index = smoke->body_animate ? DETECTIVE_SMOKE_WALK_LR_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
+        smoke->smoke_frame_index = smoke->body_animate ? smoke_walk_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
         smoke->smoke_frame_delay = 0;
 
         smoke->direction = detective->direction;
@@ -185,7 +190,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->smoke_frame_delay = smoke->body_animate ? SMOKE_DELAY : SMOKE_IDLE_DELAY;
         smoke->smoke_frame_index++;
 
-        if (smoke->smoke_frame_index > (smoke->body_animate ? DETECTIVE_SMOKE_WALK_LR_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
+        if (smoke->smoke_frame_index > (smoke->body_animate ? smoke_walk_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
         {
             smoke->state = STOPPED;
         }
