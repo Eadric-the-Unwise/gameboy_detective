@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "cig_shine.h": "c"
+        "cig_shine.h": "c",
+        "bkg_forest1_map.h": "c",
+        "dk_bkg1_tiles.h": "c"
     }
 }

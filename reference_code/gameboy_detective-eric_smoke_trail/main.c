@@ -1,8 +1,4 @@
-#include <stdio.h>
 #include <gb/gb.h>
-#include <gb/font.h>
-#include <gb/console.h>
-#include <gb/drawing.h>
 #include <gb/metasprites.h>
 #include "tiles/tile_detectivewalk.h"
 #include "tiles/cig_shine.h"
@@ -10,19 +6,7 @@
 #include "character.h"
 #include "character_smoke.h"
 #include "macros.h"
-#include "maps/dk_bkg1_map.h"
-#include "maps/dk_bkg1_tiles.h"
-#include "maps/bkg_forest1_map.h"
-#include "maps/bkg_forest1_tiles.h"
-//Eric
-
-joypads_t joypads;
-Character detective;
-CharacterSmoke smoke;
-CharacterSmoke smoke_objects[SMOKE_OBJECT_COUNT];
-UINT8 hiwater;
-UBYTE updated;
-
+//H3h3
 UBYTE running = 1;
 joypads_t joypads;
 
@@ -165,7 +149,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->x = detective->x;
         smoke->y = detective->y;
         smoke->body_animate = detective->body_animate;
-        smoke->smoke_frame_index = smoke->body_animate ? DETECTIVE_SMOKE_WALK_LR_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
+        smoke->smoke_frame_index = smoke->body_animate ? DETECTIVE_SMOKE_WALK_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
         smoke->smoke_frame_delay = 0;
 
         smoke->direction = detective->direction;
@@ -185,7 +169,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->smoke_frame_delay = smoke->body_animate ? SMOKE_DELAY : SMOKE_IDLE_DELAY;
         smoke->smoke_frame_index++;
 
-        if (smoke->smoke_frame_index > (smoke->body_animate ? DETECTIVE_SMOKE_WALK_LR_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
+        if (smoke->smoke_frame_index > (smoke->body_animate ? DETECTIVE_SMOKE_WALK_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
         {
             smoke->state = STOPPED;
         }
@@ -202,7 +186,7 @@ void main(void)
     SPRITES_8x16;
 
     OBP1_REG = 0xE1;
-    BGP_REG = 0xE4;
+    BGP_REG = 0x4E;
 
     joypad_init(1, &joypads);
 
@@ -243,10 +227,6 @@ void main(void)
     }
 
     DISPLAY_ON;
-    //set_bkg_data is actually what loads the tile images into VRAM memory
-    //set_bkg_tiles is what loads the map in the Map Layer Screen
-    set_bkg_data(0, BKG_FOREST1_TILE_COUNT, bkg_forest1_tiles);
-    set_bkg_tiles(0, 0, BKG_FOREST1_MAP_WIDTH, BKG_FOREST1_MAP_HEIGHT, bkg_forest1_map);
 
     while (running)
     {

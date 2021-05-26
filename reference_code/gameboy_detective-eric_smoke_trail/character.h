@@ -1,22 +1,15 @@
 // #ifndef CHARACTER_H //if its not defined, then proceed to line 2 and define it.
 // #define CHARACTER_H
 //pragma once is a stronger method to ifndef <-> endif
+//it makes sure that the header file is only included once
 #pragma once
 #include <gb/gb.h>
-#include <stdio.h>
-#include <gb/font.h>
-#include <gb/console.h>
-#include <gb/drawing.h>
 
-typedef struct CharacterSmoke
+typedef struct Character
 {
-    UINT8 state;
-
     UINT8 x;
     UINT8 y;
 
-    UBYTE facing_right;
-    UINT8 sprite_index;
     UBYTE direction;
 
     UINT8 cig_shine_tile_index;
@@ -27,12 +20,6 @@ typedef struct CharacterSmoke
     UINT8 body_frame_index;
     UINT8 body_frame_delay;
 
-    // Smoke Metasprite
-    UINT8 smoke_tile_index;
-    UINT8 smoke_frame_index;
-    UINT8 smoke_frame_delay;
-    UINT8 smoke_start_delay;
-
-} CharacterSmoke;
+} Character;
 // #endif
 //sort of like an end } of an if statement. If it is defined above, it will not be copied again

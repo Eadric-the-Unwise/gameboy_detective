@@ -5,5 +5,5 @@
 #define smoke_PIVOT_X 8
 #define smoke_PIVOT_Y 8
 
-extern const UINT8 smoke_data[256];
-extern const metasprite_t* const smoke_metasprites[12];
+extern const UINT8 smoke_data[224];
+extern const metasprite_t* const smoke_metasprites[9];

@@ -1,11 +1,14 @@
 #pragma once
+#define STOPPED 0
+#define RESTART 1
+#define PLAYING 2 // Sprite delays (60 = 1 second)
+#define SMOKE_OBJECT_COUNT 4
 
-// Sprite delays (60 = 1 second)
 #define FRAME_DELAY 7
 #define SMOKE_DELAY 12            //walking smoke animation frame delay
 #define SMOKE_IDLE_DELAY 11       //standing smoke animation frame delay
 #define SMOKE_IDLE_START_DELAY 90 //pause time between smoke puffs
-#define SMOKE_WALK_START_DELAY 20
+#define SMOKE_WALK_START_DELAY 10
 
 //SPRITE INDEX IS NOT RELATED TO THE TILE INDEX. These are used to load the Sprite OBJ's into OAM in order
 //0 in the OAM
@@ -39,8 +42,11 @@
 #define DETECTIVE_SMOKE_STAND_FRAME_START 0
 #define DETECTIVE_SMOKE_STAND_FRAME_END 5
 
-#define DETECTIVE_SMOKE_WALK_FRAME_START 6
-#define DETECTIVE_SMOKE_WALK_FRAME_END 8
+#define DETECTIVE_SMOKE_WALK_LR_FRAME_START 6
+#define DETECTIVE_SMOKE_WALK_LR_FRAME_END 8
+
+#define DETECTIVE_SMOKE_WALK_UPDOWN_FRAME_START 9
+#define DETECTIVE_SMOKE_WALK_UPDOWN_FRAME_END 11
 
 #define TILE_SIZE 8
 
