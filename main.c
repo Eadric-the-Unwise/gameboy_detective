@@ -127,7 +127,7 @@ void animate_detective(Character *detective)
 
         if (detective->direction == FACE_LEFT || detective->direction == FACE_RIGHT)
         {
-            smoke.facing_LR = 1;
+
             if (detective->body_frame_index > DETECTIVE_BODY_WALK_FRAME_END)
             {
                 detective->body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
@@ -135,7 +135,7 @@ void animate_detective(Character *detective)
         }
         else if (detective->direction == FACE_UP)
         {
-            smoke.facing_LR = 0;
+
             if (detective->body_frame_index > DETECTIVE_BODY_UP_FRAME_END)
             {
                 detective->body_frame_index = DETECTIVE_BODY_UP_FRAME_START;
@@ -143,7 +143,7 @@ void animate_detective(Character *detective)
         }
         else if (detective->direction == FACE_DOWN)
         {
-            smoke.facing_LR = 0;
+
             if (detective->body_frame_index > DETECTIVE_BODY_DOWN_FRAME_END)
             {
                 detective->body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
@@ -263,7 +263,7 @@ void main(void)
 
         if (joypads.joy0 & J_LEFT)
         {
-
+            smoke.facing_LR = 1;
             // Move left
             if (detective.direction != FACE_LEFT)
             { // if previously facing right...
@@ -288,6 +288,7 @@ void main(void)
         }
         else if (joypads.joy0 & J_RIGHT)
         {
+            smoke.facing_LR = 1;
             // Move right
             if (detective.direction != FACE_RIGHT)
             {
@@ -311,6 +312,7 @@ void main(void)
         }
         if (joypads.joy0 & J_UP)
         {
+            smoke.facing_LR = 0;
             // Move up
             if (detective.direction != FACE_UP && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
@@ -335,7 +337,7 @@ void main(void)
         }
         else if (joypads.joy0 & J_DOWN)
         {
-
+            smoke.facing_LR = 0;
             // Move down
             if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
