@@ -14,7 +14,8 @@
 #include "maps/dk_bkg1_tiles.h"
 #include "maps/bkg_forest1_map.h"
 #include "maps/bkg_forest1_tiles.h"
-//Eric
+#include "maps/bkg_apartment_map.h"
+#include "maps/bkg_apartment_tiles.h"
 
 joypads_t joypads;
 Character detective;
@@ -100,8 +101,8 @@ void setup_detective(Character *detective)
 {
 
     // Initial position
-    detective->x = 100;
-    detective->y = 130;
+    detective->x = 129;
+    detective->y = 80;
 
     detective->direction = FACE_LEFT; // Set to LEFT
 
@@ -272,8 +273,8 @@ void main(void)
     DISPLAY_ON;
     //set_bkg_data is actually what loads the tile images into VRAM memory
     //set_bkg_tiles is what loads the map in the Map Layer Screen
-    set_bkg_data(0, BKG_FOREST1_TILE_COUNT, bkg_forest1_tiles);
-    set_bkg_tiles(0, 0, BKG_FOREST1_MAP_WIDTH, BKG_FOREST1_MAP_HEIGHT, bkg_forest1_map);
+    set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
+    set_bkg_tiles(0, 0, BKG_APARTMENT_MAP_WIDTH, BKG_APARTMENT_MAP_HEIGHT, bkg_apartment_map);
 
     while (running)
     {
