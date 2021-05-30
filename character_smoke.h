@@ -30,6 +30,8 @@ typedef struct CharacterSmoke
 
     // Smoke Metasprite
     UINT8 smoke_tile_index;
+    UINT8 smoke_frame_start;
+    UINT8 smoke_frame_end;
     UINT8 smoke_frame_index;
     UINT8 smoke_frame_delay;
     UINT8 smoke_start_delay;

@@ -170,7 +170,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->x = detective->x;
         smoke->y = detective->y;
         smoke->body_animate = detective->body_animate;
-        smoke->smoke_frame_index = smoke->body_animate ? smoke_walk_FRAME_START : DETECTIVE_SMOKE_STAND_FRAME_START;
+        smoke->smoke_frame_index = smoke->body_animate ? smoke->smoke_frame_start : DETECTIVE_SMOKE_STAND_FRAME_START;
         smoke->smoke_frame_delay = 0;
 
         smoke->direction = detective->direction;
@@ -182,6 +182,28 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         {
             smoke->direction = FACE_LEFT;
         }
+        if (detective->body_animate)
+        {
+            // detective->body_animate
+            if (detective->direction == FACE_UP || detective->direction == FACE_DOWN)
+            {
+                // Up / Down
+                smoke->smoke_frame_start = DETECTIVE_SMOKE_WALK_UPDOWN_FRAME_START;
+                smoke->smoke_frame_end = DETECTIVE_SMOKE_WALK_UPDOWN_FRAME_END;
+            }
+            else
+            {
+                // Left / Right
+                smoke->smoke_frame_start = DETECTIVE_SMOKE_WALK_LR_FRAME_START;
+                smoke->smoke_frame_end = DETECTIVE_SMOKE_WALK_LR_FRAME_END;
+            }
+        }
+        else
+        {
+            // NOT detective->body_animate
+            smoke->smoke_frame_start = DETECTIVE_SMOKE_STAND_FRAME_START;
+            smoke->smoke_frame_end = DETECTIVE_SMOKE_STAND_FRAME_END;
+        }
     }
 
     if (smoke->state == PLAYING && smoke->smoke_frame_delay == 0)
@@ -190,7 +212,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->smoke_frame_delay = smoke->body_animate ? SMOKE_DELAY : SMOKE_IDLE_DELAY;
         smoke->smoke_frame_index++;
 
-        if (smoke->smoke_frame_index > (smoke->body_animate ? smoke_walk_FRAME_END : DETECTIVE_SMOKE_STAND_FRAME_END))
+        if (smoke->smoke_frame_index > (smoke->body_animate ? smoke->smoke_frame_end : DETECTIVE_SMOKE_STAND_FRAME_END))
         {
             smoke->state = STOPPED;
         }
@@ -263,7 +285,6 @@ void main(void)
 
         if (joypads.joy0 & J_LEFT)
         {
-            smoke.facing_LR = 1;
             // Move left
             if (detective.direction != FACE_LEFT)
             { // if previously facing right...
@@ -288,7 +309,7 @@ void main(void)
         }
         else if (joypads.joy0 & J_RIGHT)
         {
-            smoke.facing_LR = 1;
+
             // Move right
             if (detective.direction != FACE_RIGHT)
             {
@@ -312,7 +333,6 @@ void main(void)
         }
         if (joypads.joy0 & J_UP)
         {
-            smoke.facing_LR = 0;
             // Move up
             if (detective.direction != FACE_UP && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
@@ -337,7 +357,6 @@ void main(void)
         }
         else if (joypads.joy0 & J_DOWN)
         {
-            smoke.facing_LR = 0;
             // Move down
             if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
