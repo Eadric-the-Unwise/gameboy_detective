@@ -170,7 +170,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->x = detective->x;
         smoke->y = detective->y;
         smoke->body_animate = detective->body_animate;
-        smoke->smoke_frame_index = smoke->body_animate ? smoke->smoke_frame_start : DETECTIVE_SMOKE_STAND_FRAME_START;
+        smoke->smoke_frame_index = smoke->smoke_frame_start;
         smoke->smoke_frame_delay = 0;
 
         smoke->direction = detective->direction;
@@ -212,7 +212,7 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
         smoke->smoke_frame_delay = smoke->body_animate ? SMOKE_DELAY : SMOKE_IDLE_DELAY;
         smoke->smoke_frame_index++;
 
-        if (smoke->smoke_frame_index > (smoke->body_animate ? smoke->smoke_frame_end : DETECTIVE_SMOKE_STAND_FRAME_END))
+        if (smoke->smoke_frame_index > smoke->smoke_frame_end)
         {
             smoke->state = STOPPED;
         }
