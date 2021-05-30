@@ -16,6 +16,10 @@
 #include "maps/bkg_forest1_tiles.h"
 #include "maps/bkg_apartment_map.h"
 #include "maps/bkg_apartment_tiles.h"
+#include "maps/bkg_apartment_lamp_top_map.h"
+#include "maps/bkg_apartment_lamp_top_tiles.h"
+#include "maps/bkg_apartment_lamp_bot_map.h"
+#include "maps/bkg_apartment_lamp_bot_tiles.h"
 
 joypads_t joypads;
 Character detective;
@@ -272,7 +276,7 @@ void main(void)
 
     DISPLAY_ON;
     //set_bkg_data is actually what loads the tile images into VRAM memory
-    //set_bkg_tiles is what loads the map in the Map Layer Screen
+    //set_bkg_tiles is what loads the map in the Map Screen Buffer Screen
     set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
     set_bkg_tiles(0, 0, BKG_APARTMENT_MAP_WIDTH, BKG_APARTMENT_MAP_HEIGHT, bkg_apartment_map);
 
@@ -284,6 +288,16 @@ void main(void)
 
         joypad_ex(&joypads);
 
+        if (joypads.joy0 & J_A)
+        {
+
+            set_bkg_data(0x12, BKG_APARTMENT_LAMP_TOP_TILE_COUNT, bkg_apartment_lamp_top_tiles);
+            set_bkg_data(0x1E, BKG_APARTMENT_LAMP_BOT_TILE_COUNT, bkg_apartment_lamp_bot_tiles);
+        }
+        if (joypads.joy0 & J_B)
+        {
+            set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
+        }
         if (joypads.joy0 & J_LEFT)
         {
             // Move left
