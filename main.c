@@ -10,17 +10,11 @@
 #include "character.h"
 #include "character_smoke.h"
 #include "macros.h"
-#include "maps/dk_bkg1_map.h"
-#include "maps/dk_bkg1_tiles.h"
-#include "maps/bkg_forest1_map.h"
-#include "maps/bkg_forest1_tiles.h"
 #include "maps/bkg_apartment_map.h"
 #include "maps/bkg_apartment_tiles.h"
-#include "maps/bkg_apartment_lamp_top_map.h"
-#include "maps/bkg_apartment_lamp_top_tiles.h"
-#include "maps/bkg_apartment_lamp_bot_map.h"
-#include "maps/bkg_apartment_lamp_bot_tiles.h"
-//IM AN ASSHOLE
+#include "tiles/bkg_apartment_lamp_top.h"
+#include "tiles/bkg_apartment_lamp_bot.h"
+
 joypads_t joypads;
 Character detective;
 CharacterSmoke smoke;
@@ -291,8 +285,8 @@ void main(void)
         if (joypads.joy0 & J_A)
         {
 
-            set_bkg_data(0x12, BKG_APARTMENT_LAMP_TOP_TILE_COUNT, bkg_apartment_lamp_top_tiles);
-            set_bkg_data(0x1E, BKG_APARTMENT_LAMP_BOT_TILE_COUNT, bkg_apartment_lamp_bot_tiles);
+            set_bkg_data(0x12, apartment_lamp_topLen, apartment_lamp_top);
+            set_bkg_data(0x1E, apartment_lamp_botLen, apartment_lamp_bot);
         }
         if (joypads.joy0 & J_B)
         {

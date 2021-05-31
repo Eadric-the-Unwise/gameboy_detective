@@ -2,6 +2,7 @@
     "files.associations": {
         "cig_shine.h": "c",
         "bkg_forest1_map.h": "c",
-        "dk_bkg1_tiles.h": "c"
+        "dk_bkg1_tiles.h": "c",
+        "bkg_apartment_lamp_top_map.h": "c"
     }
 }
