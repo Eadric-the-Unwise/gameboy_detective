@@ -14,12 +14,17 @@
 #include "maps/bkg_apartment_tiles.h"
 #include "tiles/bkg_apartment_lamp_top.h"
 #include "tiles/bkg_apartment_lamp_bot.h"
+#include "tiles/apartment_smoke.h"
 
 joypads_t joypads;
 Character detective;
 CharacterSmoke smoke;
 CharacterSmoke smoke_objects[SMOKE_OBJECT_COUNT];
 UINT8 hiwater;
+UINT8 apartment_smoke_tile_index;
+UBYTE apartment_smoke_flip = 0;
+UBYTE apartment_smoke_delay = 0;
+
 UBYTE updated;
 
 UBYTE running = 1;
@@ -48,6 +53,14 @@ UINT8 load_smoke_data(UINT8 hiwater)
 {
     set_sprite_data(hiwater, (sizeof(smoke_data) >> 4), smoke_data);
     hiwater += (sizeof(smoke_data) >> 4);
+
+    return hiwater;
+}
+
+UINT8 load_apartment_smoke_data(UINT8 hiwater)
+{
+    set_sprite_data(hiwater, apartment_smokeLen, apartment_smoke);
+    hiwater += apartment_smokeLen;
 
     return hiwater;
 }
@@ -242,7 +255,7 @@ void main(void)
     CharacterSmoke smoke_objects[SMOKE_OBJECT_COUNT];
 
     UINT8 tile_hiwater;
-    UINT8 sprite_hiwater;
+    UINT8 sprite_hiwater; //OAM index
 
     UINT8 smoke_tile_index;
     UINT8 smoke_start_delay = 0;
@@ -257,7 +270,8 @@ void main(void)
 
     smoke_tile_index = tile_hiwater;
     tile_hiwater = load_smoke_data(tile_hiwater); //copies Detective tile count then updates with return
-
+    apartment_smoke_tile_index = tile_hiwater;
+    tile_hiwater = load_apartment_smoke_data(tile_hiwater);
     /******************************/
     // Setup structs
     /******************************/
@@ -432,8 +446,15 @@ void main(void)
             animate_smoke(&detective, &smoke_objects[i]);
         }
 
-        if (smoke_start_delay > 0)
-            smoke_start_delay--;
+        if (apartment_smoke_delay == 0)
+        {
+            apartment_smoke_flip = !apartment_smoke_flip;
+            apartment_smoke_delay = 30;
+            updated = 1;
+        }
+
+        if (apartment_smoke_delay > 0)
+            apartment_smoke_delay--;
 
         /******************************/
         // Drawing
@@ -444,7 +465,14 @@ void main(void)
             // If there's been any changes, update the metasprites.
 
             updated = 0;
-            sprite_hiwater = 0;
+            sprite_hiwater = 0; //OAM
+
+            //Apartment Smoke
+            set_sprite_tile(sprite_hiwater, apartment_smoke_tile_index);
+            move_sprite(sprite_hiwater, 53, 79);
+            set_sprite_prop(sprite_hiwater, apartment_smoke_flip ? S_FLIPX : 0);
+
+            sprite_hiwater += apartment_smokeLen;
 
             // Smoke trail
             for (UINT8 i = 0; i < SMOKE_OBJECT_COUNT; i++)
@@ -460,7 +488,8 @@ void main(void)
 
             // Hide unused sprites
             for (UINT8 i = sprite_hiwater; i < 40; i++)
-                shadow_OAM[i].y = 0;
+                shadow_OAM[i]
+                    .y = 0;
         }
 
         wait_vbl_done();
