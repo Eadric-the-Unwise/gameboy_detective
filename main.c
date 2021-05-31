@@ -446,6 +446,9 @@ void main(void)
             animate_smoke(&detective, &smoke_objects[i]);
         }
 
+        if (smoke_start_delay > 0)
+            smoke_start_delay--;
+
         if (apartment_smoke_delay == 0)
         {
             apartment_smoke_flip = !apartment_smoke_flip;
@@ -472,7 +475,7 @@ void main(void)
             move_sprite(sprite_hiwater, 53, 79);
             set_sprite_prop(sprite_hiwater, apartment_smoke_flip ? S_FLIPX : 0);
 
-            sprite_hiwater += apartment_smokeLen;
+            sprite_hiwater += 1;
 
             // Smoke trail
             for (UINT8 i = 0; i < SMOKE_OBJECT_COUNT; i++)
