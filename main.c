@@ -20,7 +20,7 @@
 #include "maps/bkg_apartment_lamp_top_tiles.h"
 #include "maps/bkg_apartment_lamp_bot_map.h"
 #include "maps/bkg_apartment_lamp_bot_tiles.h"
-
+//IM AN ASSHOLE
 joypads_t joypads;
 Character detective;
 CharacterSmoke smoke;
