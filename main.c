@@ -26,10 +26,11 @@ UINT8 hiwater;
 UINT8 apartment_smoke_tile_index;
 UBYTE apartment_smoke_flip = 0;
 UBYTE apartment_smoke_delay = 0;
-UBYTE detective_move_delay = 0;
+UBYTE apartment_lamp_delay = 0;
 
 UBYTE updated;
 UBYTE indoor;
+UBYTE apartment = 0;
 
 UBYTE running = 1;
 joypads_t joypads;
@@ -259,6 +260,7 @@ void main(void)
     joypad_init(1, &joypads);
 
     updated = 1;
+    apartment = 1;
     indoor = 0;
 
     /******************************/
@@ -312,13 +314,9 @@ void main(void)
 
         if (joypads.joy0 & J_A)
         {
-
-            set_bkg_data(0x12, apartment_lamp_topLen, apartment_lamp_top);
-            set_bkg_data(0x1E, apartment_lamp_botLen, apartment_lamp_bot);
         }
         if (joypads.joy0 & J_B)
         {
-            set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
         }
         if (joypads.joy0 & J_LEFT)
         {
@@ -436,6 +434,8 @@ void main(void)
         if (joypads.joy0 & J_START)
         {
             indoor = 1;
+            apartment = 0;
+            move_bkg(0, 0);
             set_bkg_data(0, BKG_APARTMENT_SCROLL_TILE_COUNT, bkg_apartment_scroll_tiles);
             set_bkg_tiles(0, 0, BKG_APARTMENT_SCROLL_MAP_WIDTH, BKG_APARTMENT_SCROLL_MAP_HEIGHT, bkg_apartment_scroll_map);
             detective.x = 88;
@@ -446,6 +446,7 @@ void main(void)
         if (joypads.joy0 & J_SELECT)
         {
             indoor = 0;
+            move_bkg(0, 0);
             set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
             set_bkg_tiles(0, 0, BKG_APARTMENT_MAP_WIDTH, BKG_APARTMENT_MAP_HEIGHT, bkg_apartment_map);
         }
@@ -509,15 +510,24 @@ void main(void)
         if (apartment_smoke_delay > 0)
             apartment_smoke_delay--;
 
-        // if (detective_move_delay == 0)
-        // {
+        if (apartment_lamp_delay > 0)
+            apartment_lamp_delay--;
 
-        //     detective_move_delay = 12;
-        //     updated = 1;
-        // }
+        if (apartment == 1)
+        {
+            if (apartment_lamp_delay == 0)
+            {
+                set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
+                apartment_lamp_delay = 240;
+                updated = 1;
+            }
+            if (apartment_lamp_delay == 15)
+            {
+                set_bkg_data(0x12, apartment_lamp_topLen, apartment_lamp_top);
+                set_bkg_data(0x1E, apartment_lamp_botLen, apartment_lamp_bot);
+            }
+        }
 
-        // if (detective_move_delay > 0)
-        //     detective_move_delay--;
         /******************************/
         // Drawing
         /******************************/
