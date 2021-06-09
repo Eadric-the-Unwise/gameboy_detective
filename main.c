@@ -12,6 +12,8 @@
 #include "macros.h"
 #include "maps/bkg_apartment_map.h"
 #include "maps/bkg_apartment_tiles.h"
+#include "maps/bkg_apartment_scroll_map.h"
+#include "maps/bkg_apartment_scroll_tiles.h"
 #include "tiles/bkg_apartment_lamp_top.h"
 #include "tiles/bkg_apartment_lamp_bot.h"
 #include "tiles/apartment_smoke.h"
@@ -24,8 +26,10 @@ UINT8 hiwater;
 UINT8 apartment_smoke_tile_index;
 UBYTE apartment_smoke_flip = 0;
 UBYTE apartment_smoke_delay = 0;
+UBYTE detective_move_delay = 0;
 
 UBYTE updated;
+UBYTE indoor;
 
 UBYTE running = 1;
 joypads_t joypads;
@@ -111,15 +115,15 @@ UINT8 update_smoke(CharacterSmoke *smoke, UINT8 smoke_tile_index, UINT8 x, UINT8
 void setup_detective(Character *detective)
 {
 
-    // Initial position
-    detective->x = 129;
+    // Initial position, loads from TOP RIGHT of the Metasprite
+    detective->x = 95;
     detective->y = 80;
 
     detective->direction = FACE_LEFT; // Set to LEFT
 
     // detective body
     detective->body_animate = 0; // Set to OFF
-    detective->body_frame_index = DETECTIVE_BODY_STAND_FRAME;
+    detective->body_frame_index = DETECTIVE_BODY_WALK_FRAME_START;
     detective->body_frame_delay = 0;
 }
 
@@ -181,6 +185,15 @@ void animate_smoke(Character *detective, CharacterSmoke *smoke)
 
         smoke->x = detective->x;
         smoke->y = detective->y;
+        // if (indoor == 1)
+        // {
+        //     smoke->y = SCY_REG;
+        // }
+        // else
+        // {
+        //     smoke->y = detective->y;
+        // }
+
         smoke->body_animate = detective->body_animate;
         smoke->smoke_frame_delay = 0;
 
@@ -246,6 +259,7 @@ void main(void)
     joypad_init(1, &joypads);
 
     updated = 1;
+    indoor = 0;
 
     /******************************/
     // Declare local variables
@@ -367,9 +381,17 @@ void main(void)
 
             if (can_detective_move(detective.x, detective.y - 1))
             {
-                updated = 1;
-                detective.y -= 1;
+                if (indoor == 1)
+                {
+                    updated = 1;
+                    scroll_bkg(0, -1);
+                }
 
+                else
+                {
+                    updated = 1;
+                    detective.y -= 1;
+                }
                 if (detective.body_animate == 0)
                 {
                     // started moving for the first time
@@ -380,6 +402,7 @@ void main(void)
         }
         else if (joypads.joy0 & J_DOWN)
         {
+
             // Move down
             if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
@@ -388,10 +411,20 @@ void main(void)
                 detective.body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
                 detective.body_frame_delay = 0;
             }
+
             if (can_detective_move(detective.x, detective.y + 1))
             {
-                updated = 1;
-                detective.y += 1;
+                if (indoor == 1)
+                {
+                    updated = 1;
+                    scroll_bkg(0, 1);
+                }
+
+                else
+                {
+                    detective.y += 1;
+                    updated = 1;
+                }
                 if (detective.body_animate == 0)
                 {
                     // started moving for the first time
@@ -400,6 +433,23 @@ void main(void)
                 }
             }
         }
+        if (joypads.joy0 & J_START)
+        {
+            indoor = 1;
+            set_bkg_data(0, BKG_APARTMENT_SCROLL_TILE_COUNT, bkg_apartment_scroll_tiles);
+            set_bkg_tiles(0, 0, BKG_APARTMENT_SCROLL_MAP_WIDTH, BKG_APARTMENT_SCROLL_MAP_HEIGHT, bkg_apartment_scroll_map);
+            detective.x = 88;
+            detective.y = 80;
+            detective.direction = FACE_DOWN;
+            detective.body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
+        }
+        if (joypads.joy0 & J_SELECT)
+        {
+            indoor = 0;
+            set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
+            set_bkg_tiles(0, 0, BKG_APARTMENT_MAP_WIDTH, BKG_APARTMENT_MAP_HEIGHT, bkg_apartment_map);
+        }
+
         //~ means "not"
         if (!(joypads.joy0 & (J_LEFT | J_RIGHT | J_UP | J_DOWN)))
         {
@@ -459,6 +509,15 @@ void main(void)
         if (apartment_smoke_delay > 0)
             apartment_smoke_delay--;
 
+        // if (detective_move_delay == 0)
+        // {
+
+        //     detective_move_delay = 12;
+        //     updated = 1;
+        // }
+
+        // if (detective_move_delay > 0)
+        //     detective_move_delay--;
         /******************************/
         // Drawing
         /******************************/
