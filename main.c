@@ -14,6 +14,8 @@
 #include "maps/bkg_apartment_tiles.h"
 #include "maps/bkg_apartment_scroll_map.h"
 #include "maps/bkg_apartment_scroll_tiles.h"
+#include "maps/bkg_submap_map.h"
+#include "maps/bkg_submap_tiles.h"
 #include "tiles/bkg_apartment_lamp_top.h"
 #include "tiles/bkg_apartment_lamp_bot.h"
 #include "tiles/apartment_smoke.h"
@@ -36,6 +38,59 @@ UBYTE running = 1;
 joypads_t joypads;
 
 UBYTE updated;
+
+//SUBMAP CODE//
+#define camera_max_y ((BKG_SUBMAP_MAP_WIDTH - 18) * 8)
+#define camera_max_x ((BKG_SUBMAP_MAP_HEIGHT - 20) * 8)
+#define MIN(A, B) ((A) < (B) ? (A) : (B))
+
+// current and old positions of the camera in pixels
+UWORD camera_x, camera_y, old_camera_x, old_camera_y;
+// current and old position of the map in tiles
+UBYTE map_pos_x, map_pos_y, old_map_pos_x, old_map_pos_y;
+// redraw flag, indicates that camera position was changed
+UBYTE redraw;
+
+void set_camera()
+{
+    // update hardware scroll position
+    SCY_REG = camera_y;
+    SCX_REG = camera_x;
+    // up or down
+    map_pos_y = (UBYTE)(camera_y >> 3u);
+    if (map_pos_y != old_map_pos_y)
+    {
+        if (camera_y < old_camera_y)
+        {
+            set_bkg_submap(map_pos_x, map_pos_y, MIN(21u, BKG_SUBMAP_MAP_WIDTH - map_pos_x), 1, bkg_submap_map, BKG_SUBMAP_MAP_WIDTH);
+        }
+        else
+        {
+            if ((BKG_SUBMAP_MAP_HEIGHT - 18u) > map_pos_y)
+                set_bkg_submap(map_pos_x, map_pos_y + 18u, MIN(21u, BKG_SUBMAP_MAP_WIDTH - map_pos_x), 1, bkg_submap_map, BKG_SUBMAP_MAP_WIDTH);
+        }
+        old_map_pos_y = map_pos_y;
+    }
+    // left or right
+    map_pos_x = (UBYTE)(camera_x >> 3u);
+    if (map_pos_x != old_map_pos_x)
+    {
+        if (camera_x < old_camera_x)
+        {
+            set_bkg_submap(map_pos_x, map_pos_y, 1, MIN(19u, BKG_SUBMAP_MAP_HEIGHT - map_pos_y), bkg_submap_map, BKG_SUBMAP_MAP_WIDTH);
+        }
+        else
+        {
+            if ((BKG_SUBMAP_MAP_WIDTH - 20u) > map_pos_x)
+                set_bkg_submap(map_pos_x + 20u, map_pos_y, 1, MIN(19u, BKG_SUBMAP_MAP_HEIGHT - map_pos_y), bkg_submap_map, BKG_SUBMAP_MAP_WIDTH);
+        }
+        old_map_pos_x = map_pos_x;
+    }
+    // set old camera position to current camera position
+    old_camera_x = camera_x, old_camera_y = camera_y;
+}
+
+//^^^^^^ SUBMAP CODE ABOVE ^^^^^^//
 
 //returns value of hiwater
 UINT8 load_detective_data(Character *detective, UINT8 hiwater)
@@ -301,9 +356,26 @@ void main(void)
     DISPLAY_ON;
     //set_bkg_data is actually what loads the tile images into VRAM memory
     //set_bkg_tiles is what loads the map in the Map Screen Buffer Screen
-    set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
-    set_bkg_tiles(0, 0, BKG_APARTMENT_MAP_WIDTH, BKG_APARTMENT_MAP_HEIGHT, bkg_apartment_map);
 
+    // set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
+    // set_bkg_tiles(0, 0, BKG_APARTMENT_MAP_WIDTH, BKG_APARTMENT_MAP_HEIGHT, bkg_apartment_map);
+
+    /******************************/
+    // Setup submap
+    /******************************/
+    set_bkg_data(0, BKG_SUBMAP_TILE_COUNT, bkg_submap_tiles);
+    set_bkg_submap(map_pos_x, map_pos_y, 20, 18, bkg_submap_map, BKG_SUBMAP_MAP_WIDTH);
+    map_pos_x = map_pos_y = 0;
+    old_map_pos_x = old_map_pos_y = 255;
+
+    camera_x = camera_y = 0;
+    old_camera_x = camera_x;
+    old_camera_y = camera_y;
+
+    redraw = FALSE;
+
+    SCX_REG = camera_x;
+    SCY_REG = camera_y;
     while (running)
     {
         /******************************/
@@ -320,6 +392,11 @@ void main(void)
         }
         if (joypads.joy0 & J_LEFT)
         {
+            if (camera_x)
+            {
+                camera_x--;
+                redraw = TRUE;
+            }
             // Move left
             if (detective.direction != FACE_LEFT)
             { // if previously facing right...
@@ -344,7 +421,11 @@ void main(void)
         }
         else if (joypads.joy0 & J_RIGHT)
         {
-
+            if (camera_x < camera_max_x)
+            {
+                camera_x++;
+                redraw = TRUE;
+            }
             // Move right
             if (detective.direction != FACE_RIGHT)
             {
@@ -368,6 +449,11 @@ void main(void)
         }
         if (joypads.joy0 & J_UP)
         {
+            if (camera_y)
+            {
+                camera_y--;
+                redraw = TRUE;
+            }
             // Move up
             if (detective.direction != FACE_UP && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
@@ -400,7 +486,11 @@ void main(void)
         }
         else if (joypads.joy0 & J_DOWN)
         {
-
+            if (camera_y < camera_max_y)
+            {
+                camera_y++;
+                redraw = TRUE;
+            }
             // Move down
             if (detective.direction != FACE_DOWN && !(joypads.joy0 & (J_LEFT | J_RIGHT)))
             {
@@ -480,6 +570,11 @@ void main(void)
                 smoke_start_delay = SMOKE_IDLE_START_DELAY;
             }
         }
+        if (redraw)
+        {
+            set_camera();
+            redraw = FALSE;
+        }
 
         /******************************/
         // Animations
@@ -513,20 +608,20 @@ void main(void)
         if (apartment_lamp_delay > 0)
             apartment_lamp_delay--;
 
-        if (apartment == 1)
-        {
-            if (apartment_lamp_delay == 0)
-            {
-                set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
-                apartment_lamp_delay = 240;
-                updated = 1;
-            }
-            if (apartment_lamp_delay == 15)
-            {
-                set_bkg_data(0x12, apartment_lamp_topLen, apartment_lamp_top);
-                set_bkg_data(0x1E, apartment_lamp_botLen, apartment_lamp_bot);
-            }
-        }
+        // if (apartment == 1)
+        // {
+        //     if (apartment_lamp_delay == 0)
+        //     {
+        //         set_bkg_data(0, BKG_APARTMENT_TILE_COUNT, bkg_apartment_tiles);
+        //         apartment_lamp_delay = 240;
+        //         updated = 1;
+        //     }
+        //     if (apartment_lamp_delay == 15)
+        //     {
+        //         set_bkg_data(0x12, apartment_lamp_topLen, apartment_lamp_top);
+        //         set_bkg_data(0x1E, apartment_lamp_botLen, apartment_lamp_bot);
+        //     }
+        // }
 
         /******************************/
         // Drawing
