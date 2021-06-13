@@ -7,8 +7,8 @@
 #include "character.h"
 
 //SUBMAP CODE//
-UINT8 camera_max_x = ((BKG_APARTMENT_SCROLL_MAP_WIDTH - 20) * 8);
-UINT8 camera_max_y = ((BKG_APARTMENT_SCROLL_MAP_HEIGHT - 18) * 8);
+UINT8 camera_max_x;
+UINT8 camera_max_y;
 #define MIN(A, B) ((A) < (B) ? (A) : (B))
 
 // current and old positions of the camera in pixels
@@ -19,6 +19,18 @@ UBYTE map_pos_x, map_pos_y, old_map_pos_x, old_map_pos_y;
 // redraw flag, indicates that camera position was changed
 UBYTE redraw;
 
+//below PROVIDED BY TOXA IN DISCORD //
+UINT8 level_map_width;
+UINT8 level_map_height;
+UINT8 *level_map_data;
+inline void set_level(UINT8 map_width, UINT8 map_height, UINT8 *map_data)
+{
+    level_map_width = map_width;
+    level_map_height = map_height;
+    level_map_data = map_data;
+    camera_max_x = ((map_width - 20) * 8);
+    camera_max_y = ((map_height - 18) * 8);
+}
 void set_camera()
 {
     // update hardware scroll position
@@ -30,12 +42,12 @@ void set_camera()
     {
         if (camera_y < old_camera_y)
         {
-            set_bkg_submap(map_pos_x, map_pos_y, MIN(21u, BKG_APARTMENT_SCROLL_MAP_WIDTH - map_pos_x), 1, bkg_apartment_scroll_map, BKG_APARTMENT_SCROLL_MAP_WIDTH);
+            set_bkg_submap(map_pos_x, map_pos_y, MIN(21u, level_map_width - map_pos_x), 1, *level_map_data, level_map_width);
         }
         else
         {
-            if ((BKG_APARTMENT_SCROLL_MAP_HEIGHT - 18u) > map_pos_y)
-                set_bkg_submap(map_pos_x, map_pos_y + 18u, MIN(21u, BKG_APARTMENT_SCROLL_MAP_WIDTH - map_pos_x), 1, bkg_apartment_scroll_map, BKG_APARTMENT_SCROLL_MAP_WIDTH);
+            if ((level_map_height - 18u) > map_pos_y)
+                set_bkg_submap(map_pos_x, map_pos_y + 18u, MIN(21u, level_map_width - map_pos_x), 1, *level_map_data, level_map_width);
         }
         old_map_pos_y = map_pos_y;
     }
@@ -45,12 +57,12 @@ void set_camera()
     {
         if (camera_x < old_camera_x)
         {
-            set_bkg_submap(map_pos_x, map_pos_y, 1, MIN(19u, BKG_APARTMENT_SCROLL_MAP_HEIGHT - map_pos_y), bkg_apartment_scroll_map, BKG_APARTMENT_SCROLL_MAP_WIDTH);
+            set_bkg_submap(map_pos_x, map_pos_y, 1, MIN(19u, level_map_height - map_pos_y), *level_map_data, level_map_width);
         }
         else
         {
-            if ((BKG_APARTMENT_SCROLL_MAP_WIDTH - 20u) > map_pos_x)
-                set_bkg_submap(map_pos_x + 20u, map_pos_y, 1, MIN(19u, BKG_APARTMENT_SCROLL_MAP_HEIGHT - map_pos_y), bkg_apartment_scroll_map, BKG_APARTMENT_SCROLL_MAP_WIDTH);
+            if ((level_map_width - 20u) > map_pos_x)
+                set_bkg_submap(map_pos_x + 20u, map_pos_y, 1, MIN(19u, level_map_height - map_pos_y), *level_map_data, level_map_width);
         }
         old_map_pos_x = map_pos_x;
     }
