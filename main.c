@@ -47,12 +47,52 @@ void init_house(Character *detective)
     set_bkg_submap(0, 0, BKG_APARTMENT_SCROLL_MAP_WIDTH, BKG_APARTMENT_SCROLL_MAP_HEIGHT, bkg_apartment_scroll_map, BKG_APARTMENT_SCROLL_MAP_WIDTH);
     move_bkg(0, 0);
     SHOW_BKG;
-    indoor = 1;
-    apartment = 0;
+
     detective->x = 88;
     detective->y = 80;
     detective->direction = FACE_DOWN;
     detective->body_frame_index = DETECTIVE_BODY_DOWN_FRAME_START;
+
+    indoor = 1;
+    apartment = 0;
+    map_pos_x = map_pos_y = 0;
+    old_map_pos_x = old_map_pos_y = 255;
+
+    camera_x = camera_y = 0;
+    old_camera_x = camera_x;
+    old_camera_y = camera_y;
+
+    redraw = FALSE;
+
+    SCX_REG = camera_x;
+    SCY_REG = camera_y;
+}
+
+void init_submap(Character *detective)
+{
+    HIDE_BKG;
+    set_bkg_data(0, BKG_SUBMAP_TILE_COUNT, bkg_submap_tiles);
+    set_bkg_submap(0, 0, BKG_SUBMAP_MAP_WIDTH, BKG_SUBMAP_MAP_HEIGHT, bkg_submap_map, BKG_SUBMAP_MAP_WIDTH);
+    move_bkg(0, 0);
+    SHOW_BKG;
+    detective->x = 88;
+    detective->y = 140;
+    detective->direction = FACE_UP;
+    detective->body_frame_index = DETECTIVE_BODY_UP_FRAME_START;
+
+    indoor = 0;
+    apartment = 0;
+    map_pos_x = map_pos_y = 0;
+    old_map_pos_x = old_map_pos_y = 255;
+
+    camera_x = camera_y = 0;
+    old_camera_x = camera_x;
+    old_camera_y = camera_y;
+
+    redraw = FALSE;
+
+    SCX_REG = camera_x;
+    SCY_REG = camera_y;
 }
 
 //returns value of hiwater
@@ -278,7 +318,6 @@ void main(void)
     joypad_init(1, &joypads);
 
     updated = 1;
-    indoor = 0;
 
     /******************************/
     // Declare local variables
@@ -326,18 +365,8 @@ void main(void)
     // Setup submap variables and initialize scene & detective XY
     /******************************/
     init_house(&detective);
-    indoor = 1;
-    map_pos_x = map_pos_y = 0;
-    old_map_pos_x = old_map_pos_y = 255;
+    set_level(BKG_APARTMENT_SCROLL_MAP_WIDTH, BKG_APARTMENT_SCROLL_MAP_HEIGHT, bkg_apartment_scroll_map);
 
-    camera_x = camera_y = 0;
-    old_camera_x = camera_x;
-    old_camera_y = camera_y;
-
-    redraw = FALSE;
-
-    SCX_REG = camera_x;
-    SCY_REG = camera_y;
     while (running)
     {
         /******************************/
@@ -509,7 +538,8 @@ void main(void)
         }
         if (joypads.joy0 & J_START)
         {
-            init_house(&detective);
+            init_submap(&detective);
+            set_level(BKG_SUBMAP_MAP_WIDTH, BKG_SUBMAP_MAP_HEIGHT, bkg_submap_map);
         }
         if (joypads.joy0 & J_SELECT)
         {
@@ -547,7 +577,6 @@ void main(void)
         if (redraw == 1)
         {
             set_camera();
-
             redraw = FALSE;
         }
 
